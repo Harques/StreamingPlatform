@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "dgSpecHash": "wZLyWcyVB6yyRlCpSfANi/H2Bz3Q2k2uSqunVlKAKicjCjUYsGuaiIRO8o7S41LmlwS6B82hU58Dwn65fv+kNw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\erdem\\Desktop\\Projects\\BitirmeTezi\\BitirmeTezi.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\erdem\\.nuget\\packages\\microsoft.aspnetcore.spaservices.extensions\\5.0.14\\microsoft.aspnetcore.spaservices.extensions.5.0.14.nupkg.sha512",
+    "C:\\Users\\erdem\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\5.0.0\\microsoft.extensions.fileproviders.abstractions.5.0.0.nupkg.sha512",
+    "C:\\Users\\erdem\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\5.0.0\\microsoft.extensions.fileproviders.physical.5.0.0.nupkg.sha512",
+    "C:\\Users\\erdem\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\5.0.0\\microsoft.extensions.filesystemglobbing.5.0.0.nupkg.sha512",
+    "C:\\Users\\erdem\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.0\\microsoft.extensions.primitives.5.0.0.nupkg.sha512",
+    "C:\\Users\\erdem\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.14.0\\microsoft.visualstudio.azure.containers.tools.targets.1.14.0.nupkg.sha512"
+  ],
+  "logs": []
+}
