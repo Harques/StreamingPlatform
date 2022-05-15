@@ -21,9 +21,9 @@ jobs:
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
         - run: |
-            docker build . -t bitirmeTezi:${{ github.sha }}
-            docket tag bitirmeTezi:${{ github.sha}} bitirmeregistry.azurecr.io/server/bitirmeTezi:${{ github.sha }}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server/bitirmeTezi:${{ github.sha }}
+            docker build . -t bitirmetezi:${{ github.sha }}
+            docket tag bitirmetezi:${{ github.sha}} bitirmeregistry.azurecr.io/server/bitirmetezi:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server/bitirmetezi:${{ github.sha }}
 
         - name: 'Deploy to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
