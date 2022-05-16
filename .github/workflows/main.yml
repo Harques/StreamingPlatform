@@ -7,7 +7,7 @@ jobs:
         steps:
         # checkout the repo
         - name: 'Checkout GitHub Action'
-          uses: actions/checkout@master
+          uses: actions/checkout@main
           
         - name: 'Login via Azure CLI'
           uses: azure/login@v1
@@ -21,8 +21,8 @@ jobs:
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
         - run: |
-            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/aspcoresample:${{ github.sha }}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/aspcoresample:${{ github.sha }}
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
 
         - name: 'Deploy to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
@@ -34,4 +34,4 @@ jobs:
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: aci-sampleapp
-            location: 'west us'
+            location: 'germany west central'
