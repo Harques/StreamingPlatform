@@ -21,9 +21,8 @@ jobs:
             username: ${{ secrets.REGISTRY_USERNAME }}
             password: ${{ secrets.REGISTRY_PASSWORD }}
         - run: |
-            docker build . -t bitirmetezi:${{ github.sha }}
-            docket tag bitirmetezi:${{ github.sha}} bitirmeregistry.azurecr.io/server/bitirmetezi:${{ github.sha }}
-            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/server/bitirmetezi:${{ github.sha }}
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/aspcoresample:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/aspcoresample:${{ github.sha }}
 
         - name: 'Deploy to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
