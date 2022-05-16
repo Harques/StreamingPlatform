@@ -33,4 +33,4 @@ jobs:
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: bitirmertmp
-            location: 'germany west central'
+            location: 'westeurope'
