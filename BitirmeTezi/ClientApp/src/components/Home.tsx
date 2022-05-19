@@ -1,15 +1,19 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button, Input } from 'reactstrap'
+import { runInThisContext } from 'vm';
+import { WebApi } from '../api/WebApi';
 
 type MyState = {email: string, password: string}
 
 class Home extends React.Component<{}, MyState> {
+  api: WebApi;  
 
   constructor(props: any) {
     super(props)    
     this.login = this.login.bind(this)
     this.signUp = this.signUp.bind(this)
+    this.api = new WebApi();
   }
 
   componentWillMount() {
@@ -37,33 +41,20 @@ class Home extends React.Component<{}, MyState> {
     ) 
   }
 
-  login() {
+  async login() {
     var email = this.state.email.trim();
     var password = this.state.password.trim();
 
     var body = JSON.stringify({email: email, password: password});
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body : body
-    };
+    var response = await this.api.post('auth/login', body);
 
-    fetch('https://localhost:44306/api/auth/login', requestOptions)
-      .then(async response => {
-        const isJson = response.headers.get('content-type')!.includes('application/json');
-        const data = isJson && await response.json();
-
-        if (response.ok) {
-          console.log(data.id)  
-          console.log(data.email)  
-          console.log(data.username)  
-          console.log(data.token)  
-          localStorage.setItem('token', data.token)        
-        } else {
-          alert(data.Error[0])  
-        }
-      })      
+    if (response.status == 200) {
+      sessionStorage.setItem('token', response.data.token)
+      console.log(response.data.token)
+    } else {
+      alert(response.data.Error[0])
+    }
   }
   
   signUp() {
