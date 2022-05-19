@@ -1,24 +1,67 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Button, Input } from 'reactstrap'
+import { runInThisContext } from 'vm';
+import { WebApi } from '../api/WebApi';
 
-const Home = () => (
-  <div>
-    <h1>Hello, Yasin!</h1>
-    <p>Welcome to your new single-page application, built with:</p>
-    <ul>
-      <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-      <li><a href='https://facebook.github.io/react/'>React</a> and <a href='https://redux.js.org/'>Redux</a> for client-side code</li>
-      <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-    </ul>
-        <p>To help you get started, we have also set up:</p>
-      <iframe width="560" height="315" src="rtmp://localhost:1935/live" frameborder="0" allowfullscreen></iframe>
-    <ul>
-      <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-      <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-      <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-    </ul>
-    <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-  </div>
-);
+type MyState = {email: string, password: string}
+
+class Home extends React.Component<{}, MyState> {
+  api: WebApi;  
+
+  constructor(props: any) {
+    super(props)    
+    this.login = this.login.bind(this)
+    this.signUp = this.signUp.bind(this)
+    this.api = new WebApi();
+  }
+
+  componentWillMount() {
+    if (localStorage.getItem('token') !== null) {
+      console.log("not null");
+    } else {
+      console.log("null");
+    }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <h1>Welcome to the World's Best Live Stream Platform!</h1>
+        <div className='w-25 mt-4'>
+          <Input placeholder='Email' onChange={(e) => this.setState({email: e.target.value})}></Input>
+          <Input placeholder='Parola' type='password' className='mt-4' onChange={(e) => this.setState({password: e.target.value})}></Input>
+          <div className='row justify-content-around'>
+            <Button className='mt-4 col-0 align-self-start' style={{background:'#A200C1', borderColor:'#A200C1'}} onClick={this.login}>Giriş Yap</Button>
+            <Button className='mt-4 col-0 align-self-end' style={{background:'#A200C1', borderColor:'#A200C1'}} onClick={this.signUp}>Kayıt Ol</Button>
+          </div>
+        </div>
+        
+      </React.Fragment>
+    ) 
+  }
+
+  async login() {
+    var email = this.state.email.trim();
+    var password = this.state.password.trim();
+
+    var body = JSON.stringify({email: email, password: password});
+
+    var response = await this.api.post('auth/login', body);
+
+    if (response.status == 200) {
+      sessionStorage.setItem('token', response.data.token)
+      console.log(response.data.token)
+    } else {
+      alert(response.data.Error[0])
+    }
+  }
+  
+  signUp() {
+    console.log(this.state.email)
+    console.log(this.state.password)
+  }
+
+}
 
 export default connect()(Home);
