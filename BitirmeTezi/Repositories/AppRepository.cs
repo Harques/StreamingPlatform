@@ -1,25 +1,37 @@
-﻿namespace BitirmeTezi.Repositories
+﻿using BitirmeTezi.Data;
+
+namespace BitirmeTezi.Repositories
 {
     public class AppRepository : IAppRepository
     {
+
+        private DataContext context;
+
+        public AppRepository(DataContext context)
+        {
+            this.context = context;
+        }
+
         public void Add<T>(T entity) where T : class
         {
-            throw new System.NotImplementedException();
+            context.Add(entity);
         }
 
         public void Delete<T>(T entity) where T : class
         {
-            throw new System.NotImplementedException();
-        }
-
-        public bool SaveAll()
-        {
-            throw new System.NotImplementedException();
+            context.Remove(entity);
         }
 
         public void Update<T>(T entity) where T : class
         {
-            throw new System.NotImplementedException();
+            context.Update(entity);
         }
+
+        public bool SaveAll()
+        {
+            return context.SaveChanges() > 0;
+        }
+
+        
     }
 }

@@ -67,14 +67,17 @@ namespace BitirmeTezi.Controllers
             {
                 Email = email,
                 Username = username,                
-                LastLoginDate = DateTime.Now.AddHours(3),
+                LastLoginDate = DateTime.Now, // TODO: Add 3 hours when deployed to azure
                 StreamURL = ""
             };
 
             var createdUser = await authRepository.Register(user, password);
 
-            var userToReturn = mapper.Map<UserDetailDto>(createdUser);
-            userToReturn.Token = GetTokenString(createdUser);
+            string token = GetTokenString(createdUser);
+
+            Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
+            var userToReturn = mapper.Map<UserDetailDto>(createdUser);            
             return StatusCode(201, userToReturn);
         }
 
@@ -93,9 +96,21 @@ namespace BitirmeTezi.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userToReturn = mapper.Map<UserDetailDto>(user);
-            userToReturn.Token = GetTokenString(user);
-            return Ok(userToReturn);
+            user.LastLoginDate = DateTime.Now; // TODO: Add 3 hours when deployed to azure
+
+            appRepository.Update(user);
+
+            if (appRepository.SaveAll())
+            {
+                string token = GetTokenString(user);
+
+                Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
+                var userToReturn = mapper.Map<UserDetailDto>(user);
+                return Ok(userToReturn);
+            }
+
+            return BadRequest();
         }
 
         private string GetTokenString(User user)
