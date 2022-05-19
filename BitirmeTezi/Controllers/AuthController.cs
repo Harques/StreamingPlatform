@@ -77,7 +77,8 @@ namespace BitirmeTezi.Controllers
 
             Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
-            var userToReturn = mapper.Map<UserDetailDto>(createdUser);            
+            var userToReturn = mapper.Map<UserDetailDto>(createdUser);
+            userToReturn.Token = token;
             return StatusCode(201, userToReturn);
         }
 
@@ -107,6 +108,7 @@ namespace BitirmeTezi.Controllers
                 Response.Cookies.Append("X-Access-Token", token, new CookieOptions() { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
                 var userToReturn = mapper.Map<UserDetailDto>(user);
+                userToReturn.Token = token;
                 return Ok(userToReturn);
             }
 
