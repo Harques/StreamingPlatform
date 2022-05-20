@@ -4,7 +4,7 @@ import Layout from './components/Layout';
 import Home from './components/Home';
 import Counter from './components/Counter';
 import FetchData from './components/FetchData';
-import Stream from './components/Stream';
+import Camera from './components/Camera';
 import './custom.css'
 
 export default () => (
@@ -12,6 +12,6 @@ export default () => (
         <Route exact path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
-        <Route path='/stream' component={Stream} />
+        <Route path='/camera' component={Camera} />
     </Layout>
 );
