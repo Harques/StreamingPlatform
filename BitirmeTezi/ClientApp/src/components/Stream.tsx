@@ -4,6 +4,13 @@ import { Button, Input } from 'reactstrap'
 import { AuthService } from '../api/AuthService';
 import { Component } from 'react';
 import { History } from 'history';
+import Webcam from "react-webcam";
+
+const videoConstraints = {
+  width: 1280,
+  height: 720,
+  facingMode: "user"
+};
 
 type MyState = {email: string, password: string}
 type MyProps = {history: History}
@@ -21,14 +28,25 @@ class Home extends Component<MyProps, MyState> {
   render() {
     return (
       <React.Fragment>
-        <h1>Welcome to the World's Best Live Stream Platform!</h1>
+        <h1>Stream of you</h1>
         <div className='w-25 mt-4'>
-          <Input placeholder='Email' onChange={(e) => this.setState({email: e.target.value})}></Input>
-          <Input placeholder='Parola' type='password' className='mt-4' onChange={(e) => this.setState({password: e.target.value})}></Input>
-          <div className='row justify-content-around'>
-            <Button className='mt-4 col-0 align-self-start' style={{background:'#A200C1', borderColor:'#A200C1'}} onClick={this.login}>Giriş Yap</Button>
-            <Button className='mt-4 col-0 align-self-end' style={{background:'#A200C1', borderColor:'#A200C1'}} onClick={this.signUp}>Kayıt Ol</Button>
-          </div>
+          <Webcam
+            audio={false}
+            height={720}
+            screenshotFormat="image/jpeg"
+            width={1280}
+            videoConstraints={videoConstraints}
+          >
+            {({ getScreenshot }) => (
+            <button
+              onClick={() => {
+              const imageSrc = getScreenshot()
+              }}
+            >
+              Capture photo
+            </button>
+            )}
+          </Webcam>
         </div>
       </React.Fragment>
     ) 
