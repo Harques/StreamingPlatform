@@ -19,7 +19,7 @@ class Home extends React.Component<MyProps, MyState> {
         </head>
         <body>
           <h2>Live Stream</h2>
-          <ReactHlsPlayer src="/hls/test.m3u8" autoPlay={true} playerRef={this.playerRef} width="%100" height="auto" controls={true} />
+          <ReactHlsPlayer src="http://20.54.150.204:8080/hls/test.m3u8" autoPlay={true} playerRef={this.playerRef} width="%100" height="auto" controls={true} />
           <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
           { /* <!-- Or if you want a more recent alpha version --> */ }
           { /*<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@alpha"></script> --> */ }          
