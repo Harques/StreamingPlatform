@@ -1,24 +1,32 @@
 import * as React from 'react';
+import ReactHlsPlayer from 'react-hls-player/dist';
 import { connect } from 'react-redux';
 
-const Home = () => (
-  <div>
-    <h1>Hello, Yasin!</h1>
-    <p>Welcome to your new single-page application, built with:</p>
-    <ul>
-      <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-      <li><a href='https://facebook.github.io/react/'>React</a> and <a href='https://redux.js.org/'>Redux</a> for client-side code</li>
-      <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-    </ul>
-        <p>To help you get started, we have also set up:</p>
-      <iframe width="560" height="315" src="rtmp://localhost:1935/live" frameborder="0" allowfullscreen></iframe>
-    <ul>
-      <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-      <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-      <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-    </ul>
-    <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-  </div>
-);
+type MyState = {}
+type MyProps = {}
+
+class Home extends React.Component<MyProps, MyState> {
+  playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
+
+  render() {
+    return (
+      <div>
+        <head>
+          <meta charSet="UTF-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Live Stream</title>
+        </head>
+        <body>
+          <h2>Live Stream</h2>
+          <ReactHlsPlayer src="/hls/test.m3u8" autoPlay={true} playerRef={this.playerRef} width="%100" height="auto" controls={true} />
+          <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+          { /* <!-- Or if you want a more recent alpha version --> */ }
+          { /*<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@alpha"></script> --> */ }          
+        </body>
+    </div>
+    )
+  }
+}  
 
 export default connect()(Home);
