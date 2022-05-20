@@ -1,56 +1,31 @@
 import * as React from 'react';
+import ReactHlsPlayer from 'react-hls-player/dist';
 import { connect } from 'react-redux';
-import { Button, Input } from 'reactstrap'
-import { AuthService } from '../api/AuthService';
-import { Component } from 'react';
-import { History } from 'history';
+type MyState = {}
+type MyProps = {}
 
-type MyState = {email: string, password: string}
-type MyProps = {history: History}
+class Home extends React.Component<MyProps, MyState> {
+  playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
 
-class Home extends Component<MyProps, MyState> {
-  authService: AuthService;   
-
-  constructor(props: any) {
-    super(props)    
-    this.login = this.login.bind(this)
-    this.signUp = this.signUp.bind(this)
-    this.authService = new AuthService();             
-  }
-  
   render() {
     return (
-      <React.Fragment>
-        <h1>Welcome to the World's Best Live Stream Platform!</h1>
-        <div className='w-25 mt-4'>
-          <Input placeholder='Email' onChange={(e) => this.setState({email: e.target.value})}></Input>
-          <Input placeholder='Parola' type='password' className='mt-4' onChange={(e) => this.setState({password: e.target.value})}></Input>
-          <div className='row justify-content-around'>
-            <Button className='mt-4 col-0 align-self-start' style={{background:'#A200C1', borderColor:'#A200C1'}} onClick={this.login}>Giriş Yap</Button>
-            <Button className='mt-4 col-0 align-self-end' style={{background:'#A200C1', borderColor:'#A200C1'}} onClick={this.signUp}>Kayıt Ol</Button>
-          </div>
-        </div>
-      </React.Fragment>
-    ) 
+      <div>
+        <head>
+          <meta charSet="UTF-8" />
+          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+          <title>Live Stream</title>
+        </head>
+        <body>
+          <h2>Live Stream</h2>
+          <ReactHlsPlayer src="http://20.54.150.204:8080/hls/test.m3u8" autoPlay={true} playerRef={this.playerRef} width="%100" height="auto" controls={true} />
+          <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script> 
+          { /* <!-- Or if you want a more recent alpha version --> */ }
+          { /*<!-- <script src="https://cdn.jsdelivr.net/npm/hls.js@alpha"></script> --> */ }          
+        </body>
+    </div>
+    )
   }
-
-  async login() {
-    var email = this.state.email.trim();
-    var password = this.state.password.trim();
-
-    var body = JSON.stringify({email: email, password: password});
-    
-    const success = await this.authService.login(body);
-    
-    if (success) {            
-      this.props.history.replace("/counter");
-    } 
-  }
-  
-  signUp() {    
-    console.log(this.state.email)
-    console.log(this.state.password)
-  }
-}
+}  
 
 export default connect()(Home);
