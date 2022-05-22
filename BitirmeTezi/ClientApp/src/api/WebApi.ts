@@ -1,5 +1,3 @@
-import axios, { AxiosResponse } from "axios";
-
 export class WebApi {
     private baseUrl = "https://localhost:44306/api/";        
 
