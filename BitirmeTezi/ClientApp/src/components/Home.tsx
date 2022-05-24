@@ -1,7 +1,6 @@
 import * as React from 'react';
 import ReactHlsPlayer from 'react-hls-player/dist';
 import { connect } from 'react-redux';
-
 type MyState = {}
 type MyProps = {}
 
