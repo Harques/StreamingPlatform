@@ -28,7 +28,7 @@ class Home extends Component<MyProps, MyState> {
   render() {
     return (
       <React.Fragment>
-        <h1>Camera of you</h1>
+        <h1>Go Live</h1>
         <div className='w-25 mt-4'>
           <Webcam
             audio={false}
