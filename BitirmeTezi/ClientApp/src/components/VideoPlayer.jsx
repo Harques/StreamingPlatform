@@ -3,6 +3,7 @@ import SearchBar from './SearchBar'
 import VideoLoad from '../api/VideoLoad'
 import VideoList from './VideoList'
 import VideoDetail from './VideoDetail'
+import 'semantic-ui-css/semantic.min.css'
 
 class VideoPlayer extends React.Component {
   state = { videos: [], selectedVideo: null }
