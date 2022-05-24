@@ -9,7 +9,7 @@ class VideoPlayer extends React.Component {
   state = { videos: [], selectedVideo: null }
 
   componentDidMount() {
-    this.onTermSubmit('jazzy')
+    this.onTermSubmit('kumralım')
   }
 
   onTermSubmit = async (term) => {
