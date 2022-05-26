@@ -14,9 +14,11 @@ WORKDIR "/src/."
 RUN dotnet build "BitirmeTezi.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN apt-get update && apt-get upgrade -y && \
-    apt-get install -y nodejs \
-    npm   
+RUN apt-get update -yq && apt-get install -yq curl
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get update && \
+    apt-get install -yq nodejs && \
+    rm -rf /var/lib/apt/lists/*
 RUN dotnet publish "BitirmeTezi.csproj" -c Release -o /app/publish
 
 FROM base AS final
