@@ -30,9 +30,9 @@
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <!--<script>
-      if (!crossOriginIsolated) SharedArrayBuffer = ArrayBuffer;
-    </script>-->
+    <script>
+      if (crossOriginIsolated) console.log("SharedBuffer is on");
+    </script>
     <div id="root"></div>
     <!--
       This HTML file is a template.
