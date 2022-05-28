@@ -36,4 +36,6 @@ jobs:
             name: bitirmeserver
             location: 'westeurope'
         - name: 'Assign permissions'
-          run: chmod +x ffmpeg ffprobe
+          run: | 
+            cd FFmpeg
+            chmod +x ffmpeg ffprobe
