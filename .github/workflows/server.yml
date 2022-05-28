@@ -35,3 +35,5 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: bitirmeserver
             location: 'westeurope'
+        - name: 'Assign permissions'
+          run: chmod +x ffmpeg ffprobe
