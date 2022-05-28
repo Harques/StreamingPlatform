@@ -6,6 +6,7 @@ using System.IO;
 using System.Threading;
 using Google.Cloud.Speech.V1;
 using System;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,7 +18,7 @@ namespace BitirmeTezi.Controllers
     {
         // GET: api/<SubtitleController>
         [HttpGet]
-        public async void Get()
+        public async Task<string> Get()
         {
             //using (var client = new WebClient())
             //{
@@ -50,14 +51,16 @@ namespace BitirmeTezi.Controllers
 
             var audio = RecognitionAudio.FromFile(output);
             var response = speech.Recognize(config, audio);
-
+            string subtitle = "";
             foreach (var result in response.Results)
             {
                 foreach (var alternative in result.Alternatives)
                 {
                     System.Diagnostics.Debug.WriteLine(alternative.Transcript);
+                    subtitle += alternative.Transcript;
                 }
             }
+            return subtitle;
         }
 
         // GET api/<SubtitleController>/5
