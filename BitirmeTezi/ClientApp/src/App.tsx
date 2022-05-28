@@ -8,7 +8,7 @@ import './custom.css'
 
 export default () => (
     <Layout>
-        <Route path='/home' component={Home} />
+        <Route path='/' component={Home} />
         <Route path='/counter' component={Counter} />
         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
     </Layout>
