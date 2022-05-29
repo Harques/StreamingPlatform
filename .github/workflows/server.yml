@@ -35,8 +35,3 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: bitirmeserver
             location: 'westeurope'
-        - run: |
-            docker exec bitirmeserver /bin/bash
-            cd FFmpeg
-            chmod +x ffmpeg ffprobe
-            
