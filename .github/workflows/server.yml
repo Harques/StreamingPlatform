@@ -35,3 +35,4 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: bitirmeserver
             location: 'westeurope'
+        - run: az container exec --resource-group e2d2ff7c-bb1c-87b3-2f50-034186a8b665 --name bitirmeserver --exec-command "/bin/bash"
