@@ -38,4 +38,4 @@ jobs:
         - name: Azure CLI script
           uses: azure/CLI@v1
           with:
-            inlineScript: az account show
+            inlineScript: az container exec --resource-group e2d2ff7c-bb1c-87b3-2f50-034186a8b665 --name bitirmeserver --exec-command "/bin/bash"
