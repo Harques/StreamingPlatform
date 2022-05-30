@@ -20,8 +20,7 @@ namespace BitirmeTezi.Controllers
     public class SubtitleController : ControllerBase
     {
 
-        private static Timer aTimer;
-        private static MemoryStream ms;
+        private static Timer aTimer;        
         private static StreamingRecognizeStream streamingCall;
 
         // GET: api/<SubtitleController>
@@ -29,7 +28,7 @@ namespace BitirmeTezi.Controllers
         public async Task<string> Get()
         {            
             string currentDirectory = Directory.GetCurrentDirectory(); 
-            ms = new MemoryStream();
+            MemoryStream ms = new MemoryStream();
 
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "./keys.json");
             var speech = SpeechClient.Create();
@@ -125,23 +124,6 @@ namespace BitirmeTezi.Controllers
                     AsyncResponseStream<StreamingRecognizeResponse> responseStream = streamingCall.GetResponseStream();                           
                     while (await responseStream.MoveNextAsync())
                     {
-
-                        //Thread.Sleep(3000);
-                        /*foreach (var result in responseStream.Current.Results)
-                        {
-                            foreach (var alternative in result.Alternatives)
-                            {
-                                saidWhat = alternative.Transcript;
-                                if (lastSaidWhat != saidWhat)
-                                {
-                                    Debug.WriteLine(saidWhat);
-                                    lastSaidWhat = saidWhat;                                                                                
-                                }
-
-                            }  // end for
-
-                        }*/
-
                         saidWhat = responseStream.Current.Results[0].Alternatives[0].Transcript;
                         if (lastSaidWhat != saidWhat)
                         {
