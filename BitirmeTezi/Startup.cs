@@ -1,5 +1,6 @@
 using BitirmeTezi.Data;
 using BitirmeTezi.Repositories;
+using BitirmeTezi.WorkerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -28,6 +29,7 @@ namespace BitirmeTezi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddHostedService<Worker>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

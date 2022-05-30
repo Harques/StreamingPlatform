@@ -1,20 +1,23 @@
-import * as React from "react";
+import React, { useState, Dispatch } from "react";
 import ReactHlsPlayer from "react-hls-player/dist";
 import { connect } from "react-redux";
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import Row from "antd/lib/grid/row";
 import { Content, Header } from "antd/lib/layout/layout";
 import Button from "antd/lib/button";
+import * as $ from "jquery";
+import { TextArea } from "semantic-ui-react";
 
 type MyState = { videoFile: File };
 type MyProps = {};
 
 class Home extends React.Component<MyProps, MyState> {
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
-
   constructor(props: any) {
     super(props);
     this.extractAudio = this.extractAudio.bind(this);
+    setInterval(() => this.extractAudio(),1000);
+
   }
 
   render() {
@@ -49,42 +52,51 @@ class Home extends React.Component<MyProps, MyState> {
           </Row>
           <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
           <Row style={{ width: "100%", justifyContent: "center", marginTop:"10px"}}>
-            <Button type="primary" size="large" onClick={this.extractAudio}>
-              Extract Audio
-            </Button>
+              <p></p>
           </Row>
         </Content>
       </div>
     );
   }
 
-  async extractAudio() {
-    const ffmpeg = createFFmpeg({
-      corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-      log: true,
+  extractAudio() {
+    var request = $.ajax({
+      type: "GET",
+      url: "https://localhost:44306/api/subtitle/getSubtitle"
     });
-    await ffmpeg.load();
-    ffmpeg.FS(
-      "writeFile",
-      "input.ts",
-      await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
-    );
-    await ffmpeg.run(
-      "-i",
-      "input.ts",
-      "-vn",
-      "-acodec",
-      "copy",
-      "output-audio.aac"
-    );
-    const data = ffmpeg.FS("readFile", "output-audio.aac");
-    const element = document.createElement("a");
-    const file = new Blob([data.buffer]);
-    element.href = URL.createObjectURL(file);
-    element.download = "output-audio.aac";
-    document.body.appendChild(element); // Required for this to work in FireFox
-    element.click();
-  }
+    request.done(function(res){
+      // textArea?.innerText = res
+      console.log(res);
+    });
+    request.fail(function(jqXHR){
+      console.error(jqXHR)
+    })
+  //   const ffmpeg = createFFmpeg({
+  //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
+  //     log: true,
+  //   });
+  //   await ffmpeg.load();
+  //   ffmpeg.FS(
+  //     "writeFile",
+  //     "input.ts",
+  //     await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
+  //   );
+  //   await ffmpeg.run(
+  //     "-i",
+  //     "input.ts",
+  //     "-vn",
+  //     "-acodec",
+  //     "copy",
+  //     "output-audio.aac"
+  //   );
+  //   const data = ffmpeg.FS("readFile", "output-audio.aac");
+  //   const element = document.createElement("a");
+  //   const file = new Blob([data.buffer]);
+  //   element.href = URL.createObjectURL(file);
+  //   element.download = "output-audio.aac";
+  //   document.body.appendChild(element); // Required for this to work in FireFox
+  //   element.click();
+   }
 }
 
 export default connect()(Home);
