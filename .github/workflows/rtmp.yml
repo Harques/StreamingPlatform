@@ -1,7 +1,7 @@
 on:
     push:
         branches:
-            - 'main'
+            - 'master'
 name: RTMP_Container_Workflow
 
 jobs:
