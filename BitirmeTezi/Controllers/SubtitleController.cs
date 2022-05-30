@@ -28,7 +28,8 @@ namespace BitirmeTezi.Controllers
         [HttpGet]
         public async Task<string> Get()
         {            
-            string currentDirectory = Directory.GetCurrentDirectory();            
+            string currentDirectory = Directory.GetCurrentDirectory(); 
+            ms = new MemoryStream();
 
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "./keys.json");
             var speech = SpeechClient.Create();
@@ -73,13 +74,25 @@ namespace BitirmeTezi.Controllers
                 lastRead = baseStream.Read(buffer, 0, buffer.Length);
                 ms.Write(buffer, 0, lastRead);
                 audioData = ms.ToArray();
+                
+                try {
+                    streamingCall.WriteAsync(
+                    new StreamingRecognizeRequest()
+                    {
+                        AudioContent = Google.Protobuf.ByteString.CopyFrom(buffer, 0, lastRead)
+                    }).Wait();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
 
                 if (firstTime)
                 {
                     firstTime = false;
 
                     aTimer = new Timer();
-                    aTimer.Interval = 5000;
+                    aTimer.Interval = 1000;
 
                     // Hook up the Elapsed event for the timer. 
                     aTimer.Elapsed += OnTimedEvent;
@@ -100,18 +113,7 @@ namespace BitirmeTezi.Controllers
 
         private static void OnTimedEvent(Object source, ElapsedEventArgs e)
         {
-            try
-            {
-                streamingCall.WriteAsync(
-                new StreamingRecognizeRequest()
-                {
-                    AudioContent = Google.Protobuf.ByteString.FromStream(ms)
-                }).Wait();
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.Message);
-            }            
+                      
 
             Task responseHandlerTask = Task.Run(async () =>
             {
@@ -120,7 +122,7 @@ namespace BitirmeTezi.Controllers
                 {
                     string saidWhat = "";
                     string lastSaidWhat = "";
-                    AsyncResponseStream<StreamingRecognizeResponse> responseStream = streamingCall.GetResponseStream();
+                    AsyncResponseStream<StreamingRecognizeResponse> responseStream = streamingCall.GetResponseStream();                           
                     while (await responseStream.MoveNextAsync())
                     {
 
@@ -151,13 +153,14 @@ namespace BitirmeTezi.Controllers
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.Message);
+                    //Debug.WriteLine(ex.Message);
                 }
-
-
+                
                 // The response stream has completed
             });
-            Debug.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
+
+            responseHandlerTask.Wait();
+            // Debug.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
         }        
 
         // GET api/<SubtitleController>/5
