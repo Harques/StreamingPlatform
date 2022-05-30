@@ -59,12 +59,12 @@ namespace BitirmeTezi.WorkerService
                 int lastRead = 0;
                 bool firstTime = true;
 
-                byte[] buffer = new byte[5000];
+                byte[] buffer = new byte[1024*64];
                 do
                 {
                     lastRead = baseStream.Read(buffer, 0, buffer.Length);
                     ms.Write(buffer, 0, lastRead);
-                    if (ms.Length == 0) return;
+                    if (ms.Length == 0) break;
                     audioData = ms.ToArray();
 
                     try
