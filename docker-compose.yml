@@ -12,6 +12,6 @@ services:
   server:
     build: ./BitirmeTezi
     ports:
-      - "5000:80"
+      - "80:80"
     container_name : bitirme_server
     
