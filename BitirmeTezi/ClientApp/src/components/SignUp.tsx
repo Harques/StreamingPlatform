@@ -63,8 +63,6 @@ function App() {
           variant='outlined'
           margin='normal'
           label='Email'
-          //helperText={errors.email?.message}
-          //error={!!errors.email?.message}
           fullWidth
           required
         />
@@ -73,8 +71,6 @@ function App() {
           variant='outlined'
           margin='normal'
           label='Username'
-          //helperText={errors.username?.message}
-          //error={!!errors.username?.message}
           fullWidth
           required
         />
@@ -83,8 +79,6 @@ function App() {
           variant='outlined'
           margin='normal'
           label='Password'
-          //helperText={errors.password?.message}
-          //error={!!errors.password?.message}
           type='password'
           fullWidth
           required

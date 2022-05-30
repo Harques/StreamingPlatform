@@ -1,3 +1,4 @@
+import axios from "axios";
 export class WebApi {
     private baseUrl = "https://localhost:44306/api/";        
 
@@ -8,6 +9,6 @@ export class WebApi {
             body: body
         }       
 
-        return await fetch(this.baseUrl + path, requestOptions)
+        return await axios.post(this.baseUrl + path, body);
     }    
 }

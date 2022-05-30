@@ -17,9 +17,9 @@ function handleMenuClick(e: any) {
 
 const menu = (
   <Menu onClick={handleMenuClick}>
-    <Menu.Item key='1'>Kategori 1</Menu.Item>
-    <Menu.Item key='2'>Kategori 2</Menu.Item>
-    <Menu.Item key='3'>Kategori 3</Menu.Item>
+    <Menu.Item key='1'>Gaming</Menu.Item>
+    <Menu.Item key='2'>Chat</Menu.Item>
+    <Menu.Item key='3'>Education</Menu.Item>
   </Menu>
 );
 
