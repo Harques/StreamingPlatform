@@ -6,6 +6,7 @@ import { Content, Header } from "antd/lib/layout/layout";
 import Col from "antd/lib/grid/col";
 import { Menu, Dropdown, Button, message } from "antd";
 import * as $ from "jquery";
+import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
 
 type MyState = { videoFile: File };
 type MyProps = {};
@@ -28,8 +29,7 @@ class Home extends React.Component<MyProps, MyState> {
   constructor(props: any) {
     super(props);
     this.extractAudio = this.extractAudio.bind(this);
-    setInterval(() => this.extractAudio(),1000);
-
+    setInterval(() => this.extractAudio(), 1000);
   }
 
   render() {
@@ -80,7 +80,8 @@ class Home extends React.Component<MyProps, MyState> {
               <div id='components-dropdown-demo-dropdown-button'>
                 <Dropdown overlay={menu}>
                   <Button size='large'>
-                    Categories
+                    Stream Category
+                    <ArrowDropDownOutlinedIcon/>
                   </Button>
                 </Dropdown>
               </div>
@@ -94,41 +95,41 @@ class Home extends React.Component<MyProps, MyState> {
   extractAudio() {
     var request = $.ajax({
       type: "GET",
-      url: "https://localhost:44306/api/subtitle/getSubtitle"
+      url: "https://localhost:44306/api/subtitle/getSubtitle",
     });
-    request.done(function(res){
+    request.done(function (res) {
       // textArea?.innerText = res
       console.log(res);
     });
-    request.fail(function(jqXHR){
-      console.error(jqXHR)
-    })
-  //   const ffmpeg = createFFmpeg({
-  //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-  //     log: true,
-  //   });
-  //   await ffmpeg.load();
-  //   ffmpeg.FS(
-  //     "writeFile",
-  //     "input.ts",
-  //     await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
-  //   );
-  //   await ffmpeg.run(
-  //     "-i",
-  //     "input.ts",
-  //     "-vn",
-  //     "-acodec",
-  //     "copy",
-  //     "output-audio.aac"
-  //   );
-  //   const data = ffmpeg.FS("readFile", "output-audio.aac");
-  //   const element = document.createElement("a");
-  //   const file = new Blob([data.buffer]);
-  //   element.href = URL.createObjectURL(file);
-  //   element.download = "output-audio.aac";
-  //   document.body.appendChild(element); // Required for this to work in FireFox
-  //   element.click();
-   }
+    request.fail(function (jqXHR) {
+      console.error(jqXHR);
+    });
+    //   const ffmpeg = createFFmpeg({
+    //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
+    //     log: true,
+    //   });
+    //   await ffmpeg.load();
+    //   ffmpeg.FS(
+    //     "writeFile",
+    //     "input.ts",
+    //     await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
+    //   );
+    //   await ffmpeg.run(
+    //     "-i",
+    //     "input.ts",
+    //     "-vn",
+    //     "-acodec",
+    //     "copy",
+    //     "output-audio.aac"
+    //   );
+    //   const data = ffmpeg.FS("readFile", "output-audio.aac");
+    //   const element = document.createElement("a");
+    //   const file = new Blob([data.buffer]);
+    //   element.href = URL.createObjectURL(file);
+    //   element.download = "output-audio.aac";
+    //   document.body.appendChild(element); // Required for this to work in FireFox
+    //   element.click();
+  }
 }
 
 export default connect()(Home);
