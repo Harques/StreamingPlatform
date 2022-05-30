@@ -1,15 +1,27 @@
-import React, { useState} from "react";
+import React, { useState, Dispatch } from "react";
 import ReactHlsPlayer from "react-hls-player/dist";
 import { connect } from "react-redux";
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import Row from "antd/lib/grid/row";
 import { Content, Header } from "antd/lib/layout/layout";
-import Button from "antd/lib/button";
+import Col from "antd/lib/grid/col";
+import { Menu, Dropdown, Button, message } from "antd";
 import * as $ from "jquery";
-import { TextArea } from "semantic-ui-react";
 
 type MyState = { videoFile: File };
 type MyProps = {};
+
+function handleMenuClick(e: any) {
+  message.info("Category has been changed.");
+  console.log("click", e);
+}
+
+const menu = (
+  <Menu onClick={handleMenuClick}>
+    <Menu.Item key='1'>Kategori 1</Menu.Item>
+    <Menu.Item key='2'>Kategori 2</Menu.Item>
+    <Menu.Item key='3'>Kategori 3</Menu.Item>
+  </Menu>
+);
 
 class Home extends React.Component<MyProps, MyState> {
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
@@ -24,15 +36,15 @@ class Home extends React.Component<MyProps, MyState> {
     return (
       <div>
         <Header style={{ backgroundColor: "white" }}>
-          <meta charSet="UTF-8" />
-          <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+          <meta charSet='UTF-8' />
+          <meta http-equiv='X-UA-Compatible' content='IE=edge' />
           <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0"
+            name='viewport'
+            content='width=device-width, initial-scale=1.0'
           />
           <meta
-            http-equiv="origin-trial"
-            content="AtLtVZGc0GyPpERp+fbJoKTPrzA0JUfyRIa5d0W4aINRdEEOhEfON2f5l+MDf6TKV0WXf6oxcyzc9whibCzWXQQAAABgeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJmZWF0dXJlIjoiVW5yZXN0cmljdGVkU2hhcmVkQXJyYXlCdWZmZXIiLCJleHBpcnkiOjE2NjYxMzc1OTl9"
+            http-equiv='origin-trial'
+            content='AtLtVZGc0GyPpERp+fbJoKTPrzA0JUfyRIa5d0W4aINRdEEOhEfON2f5l+MDf6TKV0WXf6oxcyzc9whibCzWXQQAAABgeyJvcmlnaW4iOiJodHRwOi8vbG9jYWxob3N0OjMwMDAiLCJmZWF0dXJlIjoiVW5yZXN0cmljdGVkU2hhcmVkQXJyYXlCdWZmZXIiLCJleHBpcnkiOjE2NjYxMzc1OTl9'
           ></meta>
           <Row style={{ width: "100%", justifyContent: "center" }}>
             <h1 style={{ color: "#1890ff" }}>Live Stream</h1>
@@ -41,18 +53,38 @@ class Home extends React.Component<MyProps, MyState> {
 
         <Content>
           <Row style={{ width: "100%", justifyContent: "center" }}>
-            <ReactHlsPlayer style={{width: "200%"}}
-              src="http://20.54.150.204:8080/hls/test.m3u8"
+            <ReactHlsPlayer
+              style={{ width: "200%" }}
+              src='http://20.54.150.204:8080/hls/test.m3u8'
               autoPlay={true}
               playerRef={this.playerRef}
-              width="%100"
-              height="auto"
+              width='%100'
+              height='auto'
               controls={true}
             />
           </Row>
-          <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-          <Row style={{ width: "100%", justifyContent: "center", marginTop:"10px"}}>
-              <p></p>
+          <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
+          <Row
+            style={{
+              width: "100%",
+              justifyContent: "center",
+              marginTop: "10px",
+            }}
+          >
+            <Col style={{ padding: "30px" }}>
+              <Button type='primary' size='large' onClick={this.extractAudio}>
+                Extract Audio
+              </Button>
+            </Col>
+            <Col style={{ padding: "30px" }}>
+              <div id='components-dropdown-demo-dropdown-button'>
+                <Dropdown overlay={menu}>
+                  <Button size='large'>
+                    Categories
+                  </Button>
+                </Dropdown>
+              </div>
+            </Col>
           </Row>
         </Content>
       </div>
