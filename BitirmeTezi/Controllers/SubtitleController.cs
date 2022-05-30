@@ -1,12 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Net;
-using Xabe.FFmpeg;
 using System.IO;
-using System.Threading;
 using Google.Cloud.Speech.V1;
 using System;
 using System.Threading.Tasks;
+using static Google.Cloud.Speech.V1.SpeechClient;
+using Google.Api.Gax.Grpc;
+using System.Diagnostics;
+using FFMpegCore;
+using FFMpegCore.Pipes;
+using FFMpegCore.Enums;
+using Xabe.FFmpeg;
+using System.Drawing;
+using System.Timers;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -16,31 +23,21 @@ namespace BitirmeTezi.Controllers
     [ApiController]
     public class SubtitleController : ControllerBase
     {
+
+        private static Timer aTimer;
+        private static MemoryStream ms;
+        private static StreamingRecognizeStream streamingCall;
+
         // GET: api/<SubtitleController>
         [HttpGet]
         public async Task<string> Get()
-        {
-            //using (var client = new WebClient())
-            //{
-            //    string url = "http://20.54.150.204:8080/hls/test-20.ts";
-            //    await client.DownloadFileTaskAsync(new System.Uri(url), "file.ts");
-            //}
+        {            
+            ms = new MemoryStream();
+
             string currentDirectory = Directory.GetCurrentDirectory();
-            //string input = Path.Combine(Directory.GetParent(currentDirectory).FullName, "file.ts");
-            //string output = Path.Combine(Directory.GetParent(currentDirectory).FullName, "file.mp4");
-
-            //await FFmpeg.Conversions.FromSnippet.Convert(input, output);
-
-            var mediaInfo = await FFmpeg.GetMediaInfo(Path.Combine(currentDirectory,"test-4.ts"));
-            string output = Path.Combine(currentDirectory, "test.flac");          
-            var conversion = await FFmpeg.Conversions.FromSnippet.ExtractAudio(mediaInfo.Path, output);
-            conversion.SetOverwriteOutput(true);
-
-            IConversionResult conversionResult = await conversion.Start();
-            System.Diagnostics.Debug.WriteLine(conversionResult.Arguments);
 
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "./keys.json");
-            var speech = SpeechClient.Create();            
+            var speech = SpeechClient.Create();
             var config = new RecognitionConfig
             {
                 Encoding = RecognitionConfig.Types.AudioEncoding.Flac,
@@ -49,18 +46,122 @@ namespace BitirmeTezi.Controllers
                 AudioChannelCount = 2,
             };
 
-            var audio = RecognitionAudio.FromFile(output);
-            var response = speech.Recognize(config, audio);
-            string subtitle = "";
-            foreach (var result in response.Results)
+            streamingCall = speech.StreamingRecognize();            
+
+            await streamingCall.WriteAsync(
+                 new StreamingRecognizeRequest()
+                 {
+                     StreamingConfig = new StreamingRecognitionConfig()
+                     {
+                         Config = config,
+                         InterimResults = true,
+                     }
+                 });
+
+            Process proc = new Process();
+
+            proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
+            proc.StartInfo.Arguments = "-i http://20.54.150.204:8080/hls/test.m3u8 -f flac pipe:1";
+            proc.StartInfo.UseShellExecute = false;
+            proc.StartInfo.RedirectStandardInput = true;
+            proc.StartInfo.RedirectStandardOutput = true;
+
+            proc.Start();
+
+            FileStream baseStream = proc.StandardOutput.BaseStream as FileStream;
+            byte[] audioData;
+            int lastRead = 0;
+            bool firstTime = true;
+            
+            byte[] buffer = new byte[5000];
+            do
             {
-                foreach (var alternative in result.Alternatives)
+                lastRead = baseStream.Read(buffer, 0, buffer.Length);
+                ms.Write(buffer, 0, lastRead);
+                audioData = ms.ToArray();
+
+                if (firstTime)
                 {
-                    System.Diagnostics.Debug.WriteLine(alternative.Transcript);
-                    subtitle += alternative.Transcript;
+                    firstTime = false;
+
+                    aTimer = new Timer();
+                    aTimer.Interval = 5000;
+
+                    // Hook up the Elapsed event for the timer. 
+                    aTimer.Elapsed += OnTimedEvent;
+
+                    aTimer.Enabled = true;
                 }
+
+                /*using (FileStream s = new FileStream(Path.Combine(currentDirectory, "pipe_output_01.flac"), FileMode.Create))
+                {
+                    s.Write(audioData, 0, audioData.Length);
+                }*/                    
+
+            } while (lastRead > 0);
+            
+
+            return "";
+        }
+
+        private static void OnTimedEvent(Object source, ElapsedEventArgs e)
+        {
+            try
+            {
+                streamingCall.WriteAsync(
+                new StreamingRecognizeRequest()
+                {
+                    AudioContent = Google.Protobuf.ByteString.FromStream(ms)
+                }).Wait();
+            } catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
             }
-            return subtitle;
+            
+            Task responseHandlerTask = Task.Run(async () =>
+            {
+                // Note that C# 8 code can use await foreach
+                try
+                {
+                    string saidWhat = "";
+                    string lastSaidWhat = "";
+                    AsyncResponseStream<StreamingRecognizeResponse> responseStream = streamingCall.GetResponseStream();
+                    while (await responseStream.MoveNextAsync())
+                    {
+
+                        //Thread.Sleep(3000);
+                        /*foreach (var result in responseStream.Current.Results)
+                        {
+                            foreach (var alternative in result.Alternatives)
+                            {
+                                saidWhat = alternative.Transcript;
+                                if (lastSaidWhat != saidWhat)
+                                {
+                                    Debug.WriteLine(saidWhat);
+                                    lastSaidWhat = saidWhat;                                                                                
+                                }
+
+                            }  // end for
+
+                        }*/
+
+                        saidWhat = responseStream.Current.Results[0].Alternatives[0].Transcript;
+                        if (lastSaidWhat != saidWhat)
+                        {
+                            Debug.WriteLine(saidWhat);
+                            lastSaidWhat = saidWhat;
+                        }
+                        // Do something with streamed response
+                    }
+                } catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+                
+
+                // The response stream has completed
+            });
+            Debug.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
         }
 
         // GET api/<SubtitleController>/5
