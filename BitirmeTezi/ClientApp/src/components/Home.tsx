@@ -1,17 +1,11 @@
 import React, { useState, Dispatch } from "react";
 import ReactHlsPlayer from "react-hls-player/dist";
 import { connect } from "react-redux";
-import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
 import Row from "antd/lib/grid/row";
 import { Content, Header } from "antd/lib/layout/layout";
-<<<<<<< HEAD
 import Col from "antd/lib/grid/col";
 import { Menu, Dropdown, Button, message } from "antd";
-=======
-import Button from "antd/lib/button";
 import * as $ from "jquery";
-import { TextArea } from "semantic-ui-react";
->>>>>>> origin
 
 type MyState = { videoFile: File };
 type MyProps = {};
@@ -69,7 +63,6 @@ class Home extends React.Component<MyProps, MyState> {
               controls={true}
             />
           </Row>
-<<<<<<< HEAD
           <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
           <Row
             style={{
@@ -92,11 +85,6 @@ class Home extends React.Component<MyProps, MyState> {
                 </Dropdown>
               </div>
             </Col>
-=======
-          <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-          <Row style={{ width: "100%", justifyContent: "center", marginTop:"10px"}}>
-              <p></p>
->>>>>>> origin
           </Row>
         </Content>
       </div>
