@@ -12,6 +12,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import Row from "antd/lib/grid/row";
 import Col from "antd/lib/grid/col";
+import { useHistory } from "react-router";
 
 interface LogIn {
   email: string;
@@ -100,6 +101,7 @@ function App() {
               variant='contained'
               color='primary'
               className={submitButton}
+              onClick={event =>  window.location.href='/signup'}
             >
               Sign Up
             </Button>

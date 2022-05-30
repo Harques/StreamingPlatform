@@ -10,13 +10,8 @@ import { Menu, Dropdown, Button, message } from "antd";
 type MyState = { videoFile: File };
 type MyProps = {};
 
-function handleButtonClick(e: any) {
-  message.info("Click on left button.");
-  console.log("click left button", e);
-}
-
 function handleMenuClick(e: any) {
-  message.info("Click on menu item.");
+  message.info("Category has been changed.");
   console.log("click", e);
 }
 
@@ -84,7 +79,7 @@ class Home extends React.Component<MyProps, MyState> {
               <div id='components-dropdown-demo-dropdown-button'>
                 <Dropdown overlay={menu}>
                   <Button size='large'>
-                    Button
+                    Categories
                   </Button>
                 </Dropdown>
               </div>
