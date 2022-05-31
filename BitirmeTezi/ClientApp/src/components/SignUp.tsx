@@ -1,115 +1,67 @@
-import React from "react";
-import {
-  makeStyles,
-  Container,
-  Typography,
-  TextField,
-  Button,
-} from "@material-ui/core";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
-import Row from "antd/lib/grid/row";
-import Col from "antd/lib/grid/col";
+import Col from 'antd/lib/grid/col';
+import * as React from 'react';
+import { connect } from 'react-redux';
+import { Button, Input } from 'reactstrap'
+import { WebApi } from '../api/WebApi';
 
-interface SignUp {
-  email: string;
-  username: string;
-  password: string;
+type MyState = {email: string, password: string, userName: string}
+
+class SignUp extends React.Component<{}, MyState> {
+  api: WebApi;  
+
+  constructor(props: any) {
+    super(props)    
+    this.login = this.login.bind(this)
+    this.signUp = this.signUp.bind(this)
+    this.api = new WebApi();
+  }
+
+  componentWillMount() {
+    if (localStorage.getItem('token') !== null) {
+      console.log("not null");
+    } else {
+      console.log("null");
+    }
+  }
+
+  render() {
+    return (
+      <React.Fragment>
+        <h2  style={{textAlign: 'center', marginTop: '10%'}}>Sign Up</h2>
+        <div className='w-25 mt-4' style={{marginLeft: 'auto',  marginRight: 'auto'}}>
+          <Input placeholder='Username *' className='mt-3' onChange={(e) => this.setState({userName: e.target.value})}></Input>
+          <Input placeholder='Email *' className='mt-3' onChange={(e) => this.setState({email: e.target.value})}></Input>
+          <Input placeholder='Password *' type='password' className='mt-3' onChange={(e) => this.setState({password: e.target.value})}></Input>
+          <div className='row justify-content-around'>
+            <Button className='mt-4 col-0 align-self-end' style={{background:'#3f51b5', width:'150px'}} onClick={this.signUp}>Apply</Button>
+          </div>
+        </div>
+      </React.Fragment>
+    ) 
+  }
+
+  async login() {
+    var email = this.state.email.trim();
+    var password = this.state.password.trim();
+
+    var body = JSON.stringify({email: email, password: password});
+
+    var response = await this.api.post('auth/login', body);
+
+    if (response.status == 200) {
+      sessionStorage.setItem('token', response.data.token)
+      console.log(response.data.token)
+    } else {
+      alert(response.data.Error[0])
+    }
+  }
+  
+  signUp() {
+    console.log(this.state.email)
+    console.log(this.state.password)
+    console.log(this.state.userName)
+  }
+
 }
 
-const schema = yup.object().shape({
-  email: yup.string().required().email(),
-  username: yup.string().required().min(2).max(25),
-  password: yup.string().required().min(8).max(120),
-});
-
-const useStyles = makeStyles((theme) => ({
-  heading: {
-    textAlign: "center",
-    margin: theme.spacing(1, 0, 4),
-  },
-  submitButton: {
-    marginTop: theme.spacing(4),
-  },
-}));
-
-function App() {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignUp>({
-    resolver: yupResolver(schema),
-  });
-
-  const { heading, submitButton } = useStyles();
-
-  const [json, setJson] = useState<string>();
-
-  const onSubmit = (data: SignUp) => {
-    setJson(JSON.stringify(data));
-  };
-
-  return (
-    <Container maxWidth='xs'>
-      <Typography className={heading} variant='h4' style={{ marginTop: "20%" }}>
-        Sign Up Form
-      </Typography>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
-        <TextField
-          {...register("email")}
-          variant='outlined'
-          margin='normal'
-          label='Email'
-          fullWidth
-          required
-        />
-        <TextField
-          {...register("username")}
-          variant='outlined'
-          margin='normal'
-          label='Username'
-          fullWidth
-          required
-        />
-        <TextField
-          {...register("password")}
-          variant='outlined'
-          margin='normal'
-          label='Password'
-          type='password'
-          fullWidth
-          required
-        />
-        <Row
-          style={{ width: "100%", justifyContent: "center", marginTop: "10px" }}
-        >
-          <Col style={{ width: "40%", padding: "10px" }}>
-            <Button
-              type='submit'
-              fullWidth
-              variant='contained'
-              color='primary'
-              className={submitButton}
-            >
-              Sign Up
-            </Button>
-          </Col>
-        </Row>
-        {json && (
-          <>
-            <Typography variant='body1'>
-              Below is the JSON that would normally get passed to the server
-              when a form gets submitted
-            </Typography>
-            <Typography variant='body2'>{json}</Typography>
-          </>
-        )}
-      </form>
-    </Container>
-  );
-}
-
-export default App;
+export default connect()(SignUp);

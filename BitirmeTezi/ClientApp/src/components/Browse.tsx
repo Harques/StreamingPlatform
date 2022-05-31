@@ -22,23 +22,29 @@ function columns(containerWidth: number) {
 class Browse extends React.Component<{}> {
   render() {
     return (
-      <Tabs defaultActiveKey='1' onChange={callback} centered size='large'>
+      <Tabs
+        defaultActiveKey='1'
+        onChange={callback}
+        centered
+        size='large'
+        type='card'
+      >
         <TabPane tab='Gaming' key='1'>
-          <h2 style={{textAlign:'center'}}>Gaming Streams</h2>
+          <h2 style={{ textAlign: "center" }}>Gaming Streams</h2>
           <div>
-            <Gallery photos={photos} columns={columns} direction="column" />
+            <Gallery photos={photos} columns={columns} direction='column' />
           </div>
         </TabPane>
         <TabPane tab='Chat' key='3'>
-          <h2 style={{textAlign:'center'}}>Chat Streams</h2>
+          <h2 style={{ textAlign: "center" }}>Chat Streams</h2>
           <div>
-            <Gallery photos={photos2} columns={columns} direction="column" />
+            <Gallery photos={photos2} columns={columns} direction='column' />
           </div>
         </TabPane>
         <TabPane tab='Education' key='2'>
-          <h2 style={{textAlign:'center'}}>Education Streams</h2>
+          <h2 style={{ textAlign: "center" }}>Education Streams</h2>
           <div>
-            <Gallery photos={photos3} columns={columns} direction="column" />
+            <Gallery photos={photos3} columns={columns} direction='column' />
           </div>
         </TabPane>
       </Tabs>

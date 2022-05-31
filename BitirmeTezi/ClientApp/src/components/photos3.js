@@ -1,48 +1,22 @@
 export const photos3 = [
-    {
-      src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
-      width: 4,
-      height: 3
-    },
-    {
-      src: "https://media-exp1.licdn.com/dms/image/C4D03AQGi4zzNQh9big/profile-displayphoto-shrink_800_800/0/1608917195204?e=1659571200&v=beta&t=-qp8cJTboU-oVZhlz1O59Mw-mTWoHi50bqqTsq_FiVk",
-      width: 1,
-      height: 1
-    },
-    {
-      src: "https://source.unsplash.com/qDkso9nvCg0/600x799",
-      width: 3,
-      height: 4
-    },
-    {
-      src: "https://source.unsplash.com/iecJiKe_RNg/600x799",
-      width: 3,
-      height: 4
-    },
-    {
-      src: "https://source.unsplash.com/epcsn8Ed8kY/600x799",
-      width: 3,
-      height: 4
-    },
-    {
-      src: "https://source.unsplash.com/NQSWvyVRIJk/800x599",
-      width: 4,
-      height: 3
-    },
-    {
-      src: "https://source.unsplash.com/zh7GEuORbUw/600x799",
-      width: 3,
-      height: 4
-    },
-    {
-      src: "https://source.unsplash.com/PpOHJezOalU/800x599",
-      width: 4,
-      height: 3
-    },
-    {
-      src: "https://source.unsplash.com/I1ASdgphUH4/800x599",
-      width: 4,
-      height: 3
-    }
-  ];
-  
+  {
+    src: "https://www.nextthoughtstudios.com/hubfs/Blog%20headers%20and%20highlight%20graphics/Why%20Videos%20are%20Important%20in%20Education.jpg",
+    width: 3,
+    height: 2,
+  },
+  {
+    src: "https://www.viewsonic.com/library/wp-content/uploads/2019/08/LB0076-hero-compressed-696x392.png",
+    width: 3,
+    height: 2,
+  },
+  {
+    src: "https://www.esrb.org/wp-content/uploads/2020/11/V1_ESRB_blog_Educational-Benefit-Video-Games-01-1024x598.jpg",
+    width: 3,
+    height: 2,
+  },
+  {
+    src: "https://1635225677.rsc.cdn77.org/images/Daily/E-Learning/educational_videos.png",
+    width: 3,
+    height: 2,
+  }
+];

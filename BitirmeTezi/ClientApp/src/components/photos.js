@@ -1,33 +1,33 @@
 export const photos = [
     {
-      src: "https://source.unsplash.com/2ShvY8Lf6l0/800x599",
-      width: 4,
-      height: 3
-    },
-    {
-      src: "https://source.unsplash.com/Dm-qxdynoEc/800x799",
-      width: 1,
-      height: 1
-    },
-    {
-      src: "https://media-exp1.licdn.com/dms/image/C4D03AQGi4zzNQh9big/profile-displayphoto-shrink_800_800/0/1608917195204?e=1659571200&v=beta&t=-qp8cJTboU-oVZhlz1O59Mw-mTWoHi50bqqTsq_FiVk",
+      src: "https://i.ibb.co/4TGTng4/616d888143c11.jpg",
       width: 3,
-      height: 4
+      height: 2
     },
     {
-      src: "https://source.unsplash.com/iecJiKe_RNg/600x799",
+      src: "https://i.ibb.co/tKhmJhX/104368106-una-linda-chica-gamer-se-sienta-en-una-acogedora-habitaci-n-detr-s-de-una-computadora-y-ju.webp",
       width: 3,
-      height: 4
+      height: 2
     },
     {
-      src: "https://source.unsplash.com/epcsn8Ed8kY/600x799",
+      src: "https://i.ibb.co/r5Hgwk7/BBVA-streamers-apertura-1.jpg",
       width: 3,
-      height: 4
+      height: 2
     },
     {
-      src: "https://source.unsplash.com/NQSWvyVRIJk/800x599",
-      width: 4,
-      height: 3
+      src: "https://i.ibb.co/4VtCPhc/bigstock-Streamer-Beautiful-Girl-Smiles-328650634-scaled.jpg",
+      width: 3,
+      height: 2
+    },
+    {
+      src: "https://i.ibb.co/0stKhjB/happy-male-gamer-enjoys-playing-260nw-1849699615.jpg",
+      width: 3,
+      height: 2
+    },
+    {
+      src: "https://i.ibb.co/T4wF6gc/istockphoto-1218726670-612x612-1.jpg",
+      width: 3,
+      height: 2
     }
   ];
   
