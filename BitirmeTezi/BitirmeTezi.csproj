@@ -43,7 +43,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="FFmpeg\ffmpeg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="FFmpeg\ffmpeg.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\ffprobe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="FFmpeg\ffprobe.exe">

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Xabe.FFmpeg;
 using Xabe.FFmpeg.Downloader;
@@ -23,7 +24,14 @@ namespace BitirmeTezi
         static async Task MainAsync(string[] args)
         {
             //await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official, "./FFmpeg");
-            FFmpeg.SetExecutablesPath("./FFmpeg");
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                FFmpeg.SetExecutablesPath("/app/FFmpeg");
+            }
+            else
+            {
+                FFmpeg.SetExecutablesPath("./FFmpeg");
+            }
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
