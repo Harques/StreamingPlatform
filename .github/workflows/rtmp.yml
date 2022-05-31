@@ -37,4 +37,4 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             ports: 8080, 1935
             name: bitirmertmp
-            location: 'westeurope'
+            location: 'germanywestcentral'

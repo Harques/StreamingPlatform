@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Google.Api.Gax.Grpc;
 using static Google.Cloud.Speech.V1.SpeechClient;
 using BitirmeTezi.Controllers;
+using System.Runtime.InteropServices;
+using Microsoft.Extensions.Logging;
 
 namespace BitirmeTezi.WorkerService
 {
@@ -15,6 +17,11 @@ namespace BitirmeTezi.WorkerService
     {
         private static System.Timers.Timer aTimer;
         private static StreamingRecognizeStream streamingCall;
+        private readonly ILogger<Worker> _logger;
+
+        public Worker(ILogger<Worker> logger) =>
+            _logger = logger;
+
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
@@ -45,9 +52,16 @@ namespace BitirmeTezi.WorkerService
                      });
 
                 Process proc = new Process();
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    proc.StartInfo.FileName = "/app/FFmpeg/ffmpeg";
+                }
+                else
+                {
+                    proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
+                }
 
-                proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
-                proc.StartInfo.Arguments = "-i http://20.54.150.204:8080/hls/test.m3u8 -f flac pipe:1";
+                proc.StartInfo.Arguments = "-i http://20.79.86.77:8080/hls/test.m3u8 -f flac pipe:1";
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardInput = true;
                 proc.StartInfo.RedirectStandardOutput = true;
@@ -59,7 +73,7 @@ namespace BitirmeTezi.WorkerService
                 int lastRead = 0;
                 bool firstTime = true;
 
-                byte[] buffer = new byte[1024*64];
+                byte[] buffer = new byte[1024 * 64];
                 do
                 {
                     lastRead = baseStream.Read(buffer, 0, buffer.Length);
@@ -77,7 +91,9 @@ namespace BitirmeTezi.WorkerService
                     }
                     catch (Exception ex)
                     {
+                        if (ex.Message.Contains("Exceeded maximum allowed stream duration of 305 seconds.") || ex.Message.Contains("Audio should be sent close to real time.")) break;
                         Debug.WriteLine(ex.Message);
+                        _logger.LogError(ex.Message);
                     }
 
                     if (firstTime)

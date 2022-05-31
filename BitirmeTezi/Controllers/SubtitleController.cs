@@ -20,6 +20,7 @@ namespace BitirmeTezi.Controllers
     public class SubtitleController : ControllerBase
     {
         public static string lastSaidWhat = "";
+        private string some = "0";
 
         // GET: api/<SubtitleController>
         [HttpGet]

@@ -9,7 +9,8 @@
 .user
 .userosscache
 .sln.docstates
-BitirmeTezi/FFmpeg
+BitirmeTezi/FFmpeg/ffmpeg.exe
+BitirmeTezi/FFmpeg/ffprobe.exe
 
 # User-specific files (MonoDevelopXamarin Studio)
 .userprefs
