@@ -27,16 +27,15 @@ class LogIn extends React.Component<{}, MyState> {
   render() {
     return (
       <React.Fragment>
-        <h4>Log In</h4>
-        <div className='w-25 mt-4'>
-          <Input placeholder='Email' onChange={(e) => this.setState({email: e.target.value})}></Input>
-          <Input placeholder='Parola' type='password' className='mt-4' onChange={(e) => this.setState({password: e.target.value})}></Input>
+        <h4  style={{textAlign: 'center', marginTop: '10%'}}>Log In</h4>
+        <div className='w-25 mt-4' style={{marginLeft: 'auto',  marginRight: 'auto'}}>
+          <Input placeholder='Email *' onChange={(e) => this.setState({email: e.target.value})}></Input>
+          <Input placeholder='Password *' type='password' className='mt-4' onChange={(e) => this.setState({password: e.target.value})}></Input>
           <div className='row justify-content-around'>
             <Button className='mt-4 col-0 align-self-start' style={{background:'#3f51b5'}} onClick={this.login}>Log In</Button>
             <Button className='mt-4 col-0 align-self-end' style={{background:'#3f51b5'}} onClick={this.signUp}>Sign Up</Button>
           </div>
         </div>
-        
       </React.Fragment>
     ) 
   }
