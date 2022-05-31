@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Google.Api.Gax.Grpc;
 using static Google.Cloud.Speech.V1.SpeechClient;
 using BitirmeTezi.Controllers;
+using System.Runtime.InteropServices;
 
 namespace BitirmeTezi.WorkerService
 {
@@ -45,8 +46,15 @@ namespace BitirmeTezi.WorkerService
                      });
 
                 Process proc = new Process();
-
-                proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg");
+                }
+                else
+                {
+                    proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
+                }
+                
                 proc.StartInfo.Arguments = "-i http://20.54.150.204:8080/hls/test.m3u8 -f flac pipe:1";
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardInput = true;
