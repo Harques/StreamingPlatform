@@ -22,7 +22,7 @@ namespace BitirmeTezi
         }
         static async Task MainAsync(string[] args)
         {
-            await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official, "./FFmpeg");
+            //await FFmpegDownloader.GetLatestVersion(FFmpegVersion.Official, "./FFmpeg");
             FFmpeg.SetExecutablesPath("./FFmpeg");
         }
 
