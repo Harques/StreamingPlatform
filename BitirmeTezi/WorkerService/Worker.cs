@@ -89,10 +89,15 @@ namespace BitirmeTezi.WorkerService
                             AudioContent = Google.Protobuf.ByteString.CopyFrom(buffer, 0, lastRead)
                         }).Wait();
                     }
+                    catch(Grpc.Core.RpcException ex){
+                        Debug.Write(ex.Message);
+                        _logger.LogError(ex.Message);
+                        break;
+                    }
                     catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
-                        break;
+                        _logger.LogError(ex.Message);
                     }
 
                     if (firstTime)
