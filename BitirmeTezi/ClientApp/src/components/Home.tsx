@@ -42,7 +42,7 @@ class Home extends React.Component<MyProps, MyState> {
         <Content>
           <Row style={{ width: "100%", justifyContent: "center" }}>
             <ReactHlsPlayer style={{width: "200%"}}
-              src="http://20.54.150.204:8080/hls/test.m3u8"
+              src="http://20.79.86.77:8080/hls/test.m3u8"
               autoPlay={true}
               playerRef={this.playerRef}
               width="%100"
@@ -62,7 +62,7 @@ class Home extends React.Component<MyProps, MyState> {
   extractAudio() {
     var request = $.ajax({
       type: "GET",
-      url: "https://localhost:44306/api/subtitle/getSubtitle"
+      url: "http://20.101.164.72/api/subtitle/getSubtitle"
     });
     request.done(function(res){
       // textArea?.innerText = res

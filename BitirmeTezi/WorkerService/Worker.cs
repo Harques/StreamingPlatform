@@ -89,13 +89,9 @@ namespace BitirmeTezi.WorkerService
                             AudioContent = Google.Protobuf.ByteString.CopyFrom(buffer, 0, lastRead)
                         }).Wait();
                     }
-                    catch(Grpc.Core.RpcException ex){
-                        Debug.Write(ex.Message);
-                        _logger.LogError(ex.Message);
-                        break;
-                    }
                     catch (Exception ex)
                     {
+                        if (ex.Message.Contains("Exceeded maximum allowed stream duration of 305 seconds.") || ex.Message.Contains("Audio should be sent close to real time.")) break;
                         Debug.WriteLine(ex.Message);
                         _logger.LogError(ex.Message);
                     }
