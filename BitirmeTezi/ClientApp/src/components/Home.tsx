@@ -13,11 +13,13 @@ type MyProps = {};
 
 class Home extends React.Component<MyProps, MyState> {
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
+  socket!: WebSocket
   constructor(props: any) {
     super(props);
     this.extractAudio = this.extractAudio.bind(this);
-    setInterval(() => this.extractAudio(),1000);
-
+    this.prepareWebSocket = this.prepareWebSocket.bind(this);
+    this.prepareWebSocket()
+    setInterval(() => this.extractAudio(), 1000);
   }
 
   render() {
@@ -60,7 +62,7 @@ class Home extends React.Component<MyProps, MyState> {
   }
 
   extractAudio() {
-    var request = $.ajax({
+    /*var request = $.ajax({
       type: "GET",
       url: "http://20.101.164.72/api/subtitle/getSubtitle"
     });
@@ -70,7 +72,9 @@ class Home extends React.Component<MyProps, MyState> {
     });
     request.fail(function(jqXHR){
       console.error(jqXHR)
-    })
+    })*/
+    if (!this.socket || this.socket.readyState != WebSocket.OPEN) return
+    this.socket.send("hey")
   //   const ffmpeg = createFFmpeg({
   //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
   //     log: true,
@@ -97,6 +101,24 @@ class Home extends React.Component<MyProps, MyState> {
   //   document.body.appendChild(element); // Required for this to work in FireFox
   //   element.click();
    }
+
+   prepareWebSocket() {
+    this.socket = new WebSocket("ws://20.101.164.72/subtitle")
+    this.socket.onopen = e => {
+      console.log("connected", e)      
+    }
+    this.socket.onclose = e => {
+      console.log("Disonnected", e)      
+    }
+    this.socket.onerror = e => {
+      console.log(e)      
+    }
+    this.socket.onmessage = e => {
+      console.log(e.data)      
+    }
+  }
 }
 
 export default connect()(Home);
+
+
