@@ -29,7 +29,7 @@ namespace BitirmeTezi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddHostedService<Worker>();
+            //services.AddHostedService<Worker>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
