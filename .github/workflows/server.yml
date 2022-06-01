@@ -37,5 +37,7 @@ jobs:
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             ports: 80, 5000
+            cpu: 4
+            memory: 4
             name: bitirmeserver
-            location: 'westeurope'
+            location: 'west europe'
