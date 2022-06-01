@@ -26,9 +26,12 @@ const menu = (
 
 class Home extends React.Component<MyProps, MyState> {
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
+  socket!: WebSocket
   constructor(props: any) {
     super(props);
     this.extractAudio = this.extractAudio.bind(this);
+    this.prepareWebSocket = this.prepareWebSocket.bind(this);
+    this.prepareWebSocket()
     setInterval(() => this.extractAudio(), 1000);
   }
 
@@ -71,11 +74,6 @@ class Home extends React.Component<MyProps, MyState> {
             }}
           >
             <Col style={{ padding: "30px" }}>
-              <Button type='primary' size='large' onClick={this.extractAudio}>
-                Extract Audio
-              </Button>
-            </Col>
-            <Col style={{ padding: "30px" }}>
               <div id='components-dropdown-demo-dropdown-button'>
                 <Dropdown overlay={menu}>
                   <Button size='large'>
@@ -92,7 +90,7 @@ class Home extends React.Component<MyProps, MyState> {
   }
 
   extractAudio() {
-    var request = $.ajax({
+    /*var request = $.ajax({
       type: "GET",
       url: "http://20.101.164.72/api/subtitle/getSubtitle"
     });
@@ -100,35 +98,55 @@ class Home extends React.Component<MyProps, MyState> {
       // textArea?.innerText = res
       console.log(res);
     });
-    request.fail(function (jqXHR) {
-      console.error(jqXHR);
-    });
-    //   const ffmpeg = createFFmpeg({
-    //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-    //     log: true,
-    //   });
-    //   await ffmpeg.load();
-    //   ffmpeg.FS(
-    //     "writeFile",
-    //     "input.ts",
-    //     await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
-    //   );
-    //   await ffmpeg.run(
-    //     "-i",
-    //     "input.ts",
-    //     "-vn",
-    //     "-acodec",
-    //     "copy",
-    //     "output-audio.aac"
-    //   );
-    //   const data = ffmpeg.FS("readFile", "output-audio.aac");
-    //   const element = document.createElement("a");
-    //   const file = new Blob([data.buffer]);
-    //   element.href = URL.createObjectURL(file);
-    //   element.download = "output-audio.aac";
-    //   document.body.appendChild(element); // Required for this to work in FireFox
-    //   element.click();
+    request.fail(function(jqXHR){
+      console.error(jqXHR)
+    })*/
+    if (!this.socket || this.socket.readyState != WebSocket.OPEN) return
+    this.socket.send("hey")
+  //   const ffmpeg = createFFmpeg({
+  //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
+  //     log: true,
+  //   });
+  //   await ffmpeg.load();
+  //   ffmpeg.FS(
+  //     "writeFile",
+  //     "input.ts",
+  //     await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
+  //   );
+  //   await ffmpeg.run(
+  //     "-i",
+  //     "input.ts",
+  //     "-vn",
+  //     "-acodec",
+  //     "copy",
+  //     "output-audio.aac"
+  //   );
+  //   const data = ffmpeg.FS("readFile", "output-audio.aac");
+  //   const element = document.createElement("a");
+  //   const file = new Blob([data.buffer]);
+  //   element.href = URL.createObjectURL(file);
+  //   element.download = "output-audio.aac";
+  //   document.body.appendChild(element); // Required for this to work in FireFox
+  //   element.click();
+   }
+
+   prepareWebSocket() {
+    this.socket = new WebSocket("ws://20.101.164.72/subtitle")
+    this.socket.onopen = e => {
+      console.log("connected", e)      
+    }
+    this.socket.onclose = e => {
+      console.log("Disonnected", e)      
+    }
+    this.socket.onerror = e => {
+      console.log(e)      
+    }
+    this.socket.onmessage = e => {
+      console.log(e.data)      
+    }
   }
 }
 
 export default connect()(Home);
+
+

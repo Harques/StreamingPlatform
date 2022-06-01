@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -40,5 +41,11 @@ namespace BitirmeTezi
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
+        public static IWebHost BuildWebHost(string[] args) =>
+          WebHost.CreateDefaultBuilder(args)
+              .UseUrls("http://20.101.164.72/")
+              .UseStartup<Startup>()
+              .Build();
     }
 }
