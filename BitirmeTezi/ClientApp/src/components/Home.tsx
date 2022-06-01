@@ -57,7 +57,7 @@ class Home extends React.Component<MyProps, MyState> {
         <Content>
           <Row style={{ width: "100%", justifyContent: "center" }}>
             <ReactHlsPlayer style={{width: "200%"}}
-              src="http://20.79.86.77:8080/hls/test.m3u8"
+              src="http://20.101.175.16:8080/hls/test.m3u8"
               autoPlay={true}
               playerRef={this.playerRef}
               width='%100'
@@ -131,7 +131,7 @@ class Home extends React.Component<MyProps, MyState> {
    }
 
    prepareWebSocket() {
-    this.socket = new WebSocket("ws://20.101.164.72/subtitle")
+    this.socket = new WebSocket("ws://20.50.189.17/subtitle")
     this.socket.onopen = e => {
       console.log("connected", e)      
     }

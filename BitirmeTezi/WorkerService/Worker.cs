@@ -61,7 +61,7 @@ namespace BitirmeTezi.WorkerService
                     proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
                 }
 
-                proc.StartInfo.Arguments = "-i http://20.79.86.77:8080/hls/test.m3u8 -f flac pipe:1";
+                proc.StartInfo.Arguments = "-i http://20.101.175.16:8080/hls/test.m3u8 -f flac pipe:1";
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardInput = true;
                 proc.StartInfo.RedirectStandardOutput = true;

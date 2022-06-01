@@ -161,7 +161,7 @@ namespace BitirmeTezi
             while (!result.CloseStatus.HasValue)
             {
                 var inComingMesage = Encoding.UTF8.GetString(bag, 0, result.Count);
-                Debug.WriteLine("\nClients says that: '{0}'", inComingMesage);
+                //Debug.WriteLine("\nClients says that: '{0}'", inComingMesage);
                 var rnd = new Random();
                 var number = rnd.Next(1, 100);
                 string message = string.Format("You luck Number is '{0}'. Dont't remember that", number.ToString());
