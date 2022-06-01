@@ -73,7 +73,7 @@ namespace BitirmeTezi.WorkerService
                 int lastRead = 0;
                 bool firstTime = true;
 
-                byte[] buffer = new byte[17500];
+                byte[] buffer = new byte[32768];
                 do
                 {
                     lastRead = baseStream.Read(buffer, 0, buffer.Length);
