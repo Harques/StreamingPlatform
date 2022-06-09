@@ -65,6 +65,7 @@ class Home extends React.Component<MyProps, MyState> {
               controls={true}
             />
           </Row>
+          <p id="subtitle"></p>
           <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
           <Row
             style={{
@@ -142,6 +143,8 @@ class Home extends React.Component<MyProps, MyState> {
       console.log(e)      
     }
     this.socket.onmessage = e => {
+      let span = document.getElementById("subtitle")
+      span.textContent = e.data
       console.log(e.data)      
     }
   }
