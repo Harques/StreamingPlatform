@@ -64,8 +64,8 @@ class Home extends React.Component<MyProps, MyState> {
               height='auto'
               controls={true}
             />
+            <p style={{position:"relative", top:"-7.5rem", backgroundColor: "rgba(0,0,0,.75)", color:"rgba(255,255,255,1)", fontSize:"xx-large", paddingRight:"0.5rem", paddingLeft:"0.5rem"}} id="subtitle"></p>
           </Row>
-          <p id="subtitle"></p>
           <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
           <Row
             style={{
