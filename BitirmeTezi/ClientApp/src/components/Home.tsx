@@ -201,8 +201,6 @@ class Home extends React.Component<MyProps, MyState> {
     };
     this.socket.onmessage = (e) => {
       console.log(e.data);
-      var txt =
-        "genellikle önemli bir olay ya da sahne aracılığıyla tek ve yoğun bir etki uyandırması ve az sayıda karaktere yer vermesiyle roman ve diğer anlatı türlerinden SEKİZ hikayeler genel gerçek veya gerçeğe yakın olaylardır.";
       getSubtitleText(e.data);
     };
   }
