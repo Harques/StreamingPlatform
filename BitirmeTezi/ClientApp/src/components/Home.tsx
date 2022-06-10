@@ -83,55 +83,26 @@ class Home extends React.Component<MyProps, MyState> {
 
         <Content>
           <Row style={{ width: "100%", justifyContent: "center" }}>
-            <ReactHlsPlayer
-              style={{ width: "200%" }}
-              src='http://20.101.175.16:8080/hls/test.m3u8'
-              autoPlay={true}
-              playerRef={this.playerRef}
-              width='%100'
-              height='auto'
-              controls={true}
-            />
-          </Row>
-          <Row style={{ width: "100%", justifyContent: "center" }}>
-            <p
-              style={{
-                position: "relative",
-                top: "-7.5rem",
-                backgroundColor: "rgba(0,0,0,.75)",
-                color: "rgba(255,255,255,1)",
-                fontSize: "xx-large",
-                paddingRight: "0.5rem",
-                paddingLeft: "0.5rem",
-                display: "block",
-                opacity: "1",
-              }}
-              id='subtitle'
-            ></p>
-          </Row>
-          <Row style={{ justifyContent: "right" }}>
-            <Tooltip placement='left' title='Altyazı'>
-              <Subtitles
+            <div style={{ position: "relative" }}>
+              <ReactHlsPlayer
+                src='http://20.101.175.16:8080/hls/test.m3u8'
+                autoPlay={true}
+                playerRef={this.playerRef}
+                width='1500px'
+                height='auto'
+                controls={true}
                 style={{
                   position: "relative",
-                  top: "-23rem",
-                  right: "-3.8rem",
-                  color: "white",
-                  backgroundColor: "rgba(0,0,0,.5)",
                 }}
-                onClick={displaySubtitles}
               />
-            </Tooltip>
-          </Row>
-          <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
-          <Row
-            style={{
-              width: "100%",
-              justifyContent: "center",
-              marginTop: "10px",
-            }}
-          >
-            <Col style={{ padding: "30px" }}>
+            </div>
+            <Row
+              style={{
+                width: "100%",
+                justifyContent: "center",
+                padding: "20px"
+              }}
+            >
               <div id='components-dropdown-demo-dropdown-button'>
                 <Dropdown overlay={menu}>
                   <Button size='large'>
@@ -140,8 +111,39 @@ class Home extends React.Component<MyProps, MyState> {
                   </Button>
                 </Dropdown>
               </div>
-            </Col>
+            </Row>
+            <Row style={{ width: "100%", justifyContent: "center" }}>
+              <p
+                style={{
+                  position: "relative",
+                  top: "-9.5rem",
+                  backgroundColor: "rgba(0,0,0,.75)",
+                  color: "rgba(255,255,255,1)",
+                  fontSize: "xx-large",
+                  paddingRight: "0.5rem",
+                  paddingLeft: "0.5rem",
+                  display: "block",
+                  opacity: "1"
+                }}
+                id='subtitle'
+              ></p>
+            </Row>
+            <Row style={{ width: "100%", justifyContent: "center" }}>
+              <Tooltip placement='left' title='Altyazı'>
+                <Subtitles
+                  style={{
+                    position: "relative",
+                    top: "-28rem",
+                    right: "-36.2rem",
+                    color: "white",
+                    backgroundColor: "rgba(0,0,0,.4)",
+                  }}
+                  onClick={displaySubtitles}
+                />
+              </Tooltip>
+            </Row>
           </Row>
+          <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
         </Content>
       </div>
     );
@@ -189,6 +191,7 @@ class Home extends React.Component<MyProps, MyState> {
   }
 
   prepareWebSocket() {
+    //this.socket = new WebSocket("ws://20.50.189.17/subtitle");
     this.socket = new WebSocket("ws://localhost:5000/subtitle");
     this.socket.onopen = (e) => {
       console.log("connected", e);
