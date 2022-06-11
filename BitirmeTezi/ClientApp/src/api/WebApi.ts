@@ -9,6 +9,6 @@ export class WebApi {
             body: body
         }       
 
-        return await axios.post(this.baseUrl + path, body);
+        return await fetch(this.baseUrl + path, requestOptions)
     }    
 }

@@ -23,4 +23,17 @@ export class AuthService {
             alert(data.Error[0])
         }
     }
+
+    public async signUp(body: string) {
+        const response = await this.api.post('auth/register', body)
+
+        var data = await response.json()
+
+        if (response.ok) {
+            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamUrl, new Date(data.lastLoginDate), data.token)) 
+            return true
+        } else {
+            alert(data.Error[0])
+        }
+    }
 }

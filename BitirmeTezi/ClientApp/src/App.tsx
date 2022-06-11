@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route } from 'react-router';
+import { Redirect, Route } from 'react-router';
 import Layout from './components/Layout';
 import Home from './components/Home';
 import SignUp from './components/SignUp';
@@ -9,6 +9,9 @@ import './custom.css'
 
 export default () => (
     <Layout>
+        <Route exact path="/">
+            <Redirect to="/login" />
+        </Route>
         <Route path='/home' component={Home} />
         <Route path='/signup' component={SignUp} />
         <Route path='/login' component={LogIn} />

@@ -2,18 +2,21 @@ import Col from 'antd/lib/grid/col';
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { Button, Input } from 'reactstrap'
+import { AuthService } from '../api/AuthService';
 import { WebApi } from '../api/WebApi';
+import { History } from 'history'
 
 type MyState = {email: string, password: string, userName: string}
+type MyProps = {history: History}
 
-class SignUp extends React.Component<{}, MyState> {
-  api: WebApi;  
+class SignUp extends React.Component<MyProps, MyState> {
+  authService: AuthService;  
 
   constructor(props: any) {
     super(props)    
     this.login = this.login.bind(this)
     this.signUp = this.signUp.bind(this)
-    this.api = new WebApi();
+    this.authService = new AuthService();
   }
 
   componentWillMount() {
@@ -41,25 +44,24 @@ class SignUp extends React.Component<{}, MyState> {
   }
 
   async login() {
-    var email = this.state.email.trim();
-    var password = this.state.password.trim();
-
-    var body = JSON.stringify({email: email, password: password});
-
-    var response = await this.api.post('auth/login', body);
-
-    if (response.status == 200) {
-      sessionStorage.setItem('token', response.data.token)
-      console.log(response.data.token)
-    } else {
-      alert(response.data.Error[0])
-    }
+    this.props.history.goBack()
   }
   
-  signUp() {
-    console.log(this.state.email)
-    console.log(this.state.password)
-    console.log(this.state.userName)
+  async signUp() {
+    var email = this.state.email.trim();
+    var password = this.state.password.trim();
+    var username = this.state.userName.trim();
+
+    console.log(email + " " + password + " " + username)
+
+    var body = JSON.stringify({username: username, email: email, password: password});
+
+    const success = await this.authService.signUp(body)
+
+    if (success) {      
+      window.history.replaceState(null, '', "/home");
+      this.props.history.push('/home')
+    } 
   }
 
 }

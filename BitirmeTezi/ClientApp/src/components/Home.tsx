@@ -7,6 +7,8 @@ import Col from "antd/lib/grid/col";
 import { Menu, Dropdown, Button, message, Tooltip } from "antd";
 import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
 import { Subtitles } from "@material-ui/icons";
+import NavMenu from "./NavMenu";
+import { Context } from "../helpers/Context";
 
 type MyState = { videoFile: File };
 type MyProps = {};
@@ -17,7 +19,7 @@ function handleMenuClick(e: any) {
 }
 
 function displaySubtitles() {
-  var subtitle = document.getElementById("subtitle");
+  var subtitle = document.getElementById("subtitle")!;
   if (subtitle.style.opacity === "1") {
     subtitle.style.opacity = "0";
   } else {
@@ -26,18 +28,14 @@ function displaySubtitles() {
 }
 
 function getSubtitleText(textData: string | null) {
+  let span = document.getElementById("subtitle")!;
   if (textData != null) {
     var strArray = textData.split(" ");
     while (strArray.length > 8) {
       strArray.splice(0, 1);
     }
     var subtitle = strArray.join(" ");
-    try {
-      let span = document.getElementById("subtitle");
-      span.textContent = subtitle;
-    } catch (error) {
-      console.log(error);
-    }
+    span.textContent = subtitle;
   } else {
     span.textContent = " ";
   }
@@ -54,17 +52,22 @@ const menu = (
 class Home extends React.Component<MyProps, MyState> {
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
   socket!: WebSocket;
+  context: Context;
   constructor(props: any) {
     super(props);
     this.extractAudio = this.extractAudio.bind(this);
     this.prepareWebSocket = this.prepareWebSocket.bind(this);
     this.prepareWebSocket();
     setInterval(() => this.extractAudio(), 1000);
+    this.context = Context.getInstance()
+    if (this.context.getCurrentUser() !== undefined)
+      console.log(this.context.getCurrentUser().email)
   }
 
-  render() {
+  render() {    
     return (
-      <div>
+      <React.Fragment>
+        <NavMenu />
         <Header style={{ backgroundColor: "white" }}>
           <meta charSet='UTF-8' />
           <meta http-equiv='X-UA-Compatible' content='IE=edge' />
@@ -145,7 +148,7 @@ class Home extends React.Component<MyProps, MyState> {
           </Row>
           <script src='https://cdn.jsdelivr.net/npm/hls.js@latest'></script>
         </Content>
-      </div>
+      </React.Fragment>
     );
   }
 

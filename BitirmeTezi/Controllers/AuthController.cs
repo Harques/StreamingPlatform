@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +23,7 @@ namespace BitirmeTezi.Controllers
         private IAppRepository appRepository;
         private IMapper mapper;
         private IConfiguration configuration;
+        private static Random random = new Random();
 
         public AuthController(IAuthRepository authRepository, IAppRepository appRepository, IMapper mapper, IConfiguration configuration)
         {
@@ -61,14 +63,19 @@ namespace BitirmeTezi.Controllers
             {
                 ModelState.AddModelError("Error", "Parola en az 6 karakterden oluşmalı.");
                 return BadRequest(ModelState);
-            }            
+            }
+
+            const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+            
+            string streamURL = new(Enumerable.Repeat(chars, 8)
+                .Select(s => s[random.Next(s.Length)]).ToArray());
 
             User user = new User
             {
                 Email = email,
                 Username = username,                
                 LastLoginDate = DateTime.Now, // TODO: Add 3 hours when deployed to azure
-                StreamURL = ""
+                StreamURL = streamURL
             };
 
             var createdUser = await authRepository.Register(user, password);
