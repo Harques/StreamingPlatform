@@ -1,9 +1,7 @@
 import * as React from 'react';
-import { Button, Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link, useHistory } from 'react-router-dom';
+import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import './NavMenu.css';
-import { LaptopWindows } from '@material-ui/icons';
-import { useStore } from 'react-redux';
 
 export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }> {
     public state = {
