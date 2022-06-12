@@ -1,6 +1,7 @@
 import { Tabs } from "antd";
 import React from "react";
 import Gallery from "react-photo-gallery";
+import NavMenu from "./NavMenu";
 import { photos } from "./photos";
 import { photos2 } from "./photos2";
 import { photos3 } from "./photos3";
@@ -22,32 +23,35 @@ function columns(containerWidth: number) {
 class Browse extends React.Component<{}> {
   render() {
     return (
-      <Tabs
-        defaultActiveKey='1'
-        onChange={callback}
-        centered
-        size='large'
-        type='card'
-      >
-        <TabPane tab='Gaming' key='1'>
-          <h2 style={{ textAlign: "center" }}>Oyunculuk</h2>
-          <div>
-            <Gallery photos={photos} columns={columns} direction='column' />
-          </div>
-        </TabPane>
-        <TabPane tab='Chat' key='3'>
-          <h2 style={{ textAlign: "center" }}>Sohbet</h2>
-          <div>
-            <Gallery photos={photos2} columns={columns} direction='column' />
-          </div>
-        </TabPane>
-        <TabPane tab='Education' key='2'>
-          <h2 style={{ textAlign: "center" }}>Eğitim</h2>
-          <div>
-            <Gallery photos={photos3} columns={columns} direction='column' />
-          </div>
-        </TabPane>
-      </Tabs>
+      <>
+        <NavMenu />
+        <Tabs
+          defaultActiveKey='1'
+          onChange={callback}
+          centered
+          size='large'
+          type='card'
+        >
+          <TabPane tab='Gaming' key='1'>
+            <h2 style={{ textAlign: "center" }}>Oyun</h2>
+            <div>
+              <Gallery photos={photos} columns={columns} direction='column' />
+            </div>
+          </TabPane>
+          <TabPane tab='Chat' key='3'>
+            <h2 style={{ textAlign: "center" }}>Sohbet</h2>
+            <div>
+              <Gallery photos={photos2} columns={columns} direction='column' />
+            </div>
+          </TabPane>
+          <TabPane tab='Education' key='2'>
+            <h2 style={{ textAlign: "center" }}>Eğitim</h2>
+            <div>
+              <Gallery photos={photos3} columns={columns} direction='column' />
+            </div>
+          </TabPane>
+        </Tabs>
+      </>
     );
   }
 }

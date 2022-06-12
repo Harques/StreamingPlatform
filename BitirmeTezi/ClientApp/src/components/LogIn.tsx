@@ -38,13 +38,13 @@ class LogIn extends React.Component<MyProps, MyState> {
   render() {
     return (
       <React.Fragment>
-        <h2 style={{textAlign: 'center', marginTop: '10%'}}>Log In</h2>
+        <h2 style={{textAlign: 'center', marginTop: '10%'}}>Giriş</h2>
         <div className='w-25 mt-4' style={{marginLeft: 'auto',  marginRight: 'auto'}}>
-          <Input placeholder='Email *' onChange={(e) => this.setState({email: e.target.value})}></Input>
-          <Input placeholder='Password *' type='password' className='mt-3' onChange={(e) => this.setState({password: e.target.value})}></Input>
+          <Input placeholder='E-Posta *' onChange={(e) => this.setState({email: e.target.value})}></Input>
+          <Input placeholder='Şifre *' type='password' className='mt-3' onChange={(e) => this.setState({password: e.target.value})}></Input>
           <div className='row justify-content-around'>
-            <Button className='mt-4 col-0 align-self-start' style={{background:'#3f51b5', width:'120px'}} onClick={this.login}>Log In</Button>
-            <Button className='mt-4 col-0 align-self-end' style={{background:'#3f51b5', width:'120px'}} onClick={this.signUp}>Sign Up</Button>
+            <Button className='mt-4 col-0 align-self-start' style={{background:'#3f51b5', width:'120px'}} onClick={this.login}>Giriş</Button>
+            <Button className='mt-4 col-0 align-self-end' style={{background:'#3f51b5', width:'120px'}} onClick={this.signUp}>Kaydol</Button>
           </div>
         </div>
       </React.Fragment>

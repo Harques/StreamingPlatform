@@ -3,15 +3,12 @@ import ReactHlsPlayer from "react-hls-player/dist";
 import { connect } from "react-redux";
 import Row from "antd/lib/grid/row";
 import { Content, Header } from "antd/lib/layout/layout";
-import {useParams, useLocation} from "react-router-dom"
-import Col from "antd/lib/grid/col";
 import { Menu, Dropdown, Button, message, Tooltip } from "antd";
 import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
-import { Subtitles, TitleSharp } from "@material-ui/icons";
+import { Subtitles } from "@material-ui/icons";
 import NavMenu from "./NavMenu";
 import { Context } from "../helpers/Context";
 import { AuthService } from '../api/AuthService';
-import { StringSchema } from "yup";
 
 type MyState = { url : string};
 type MyProps = {};
@@ -47,9 +44,9 @@ function getSubtitleText(textData: string | null) {
 
 const menu = (
   <Menu onClick={handleMenuClick}>
-    <Menu.Item key='1'>Gaming</Menu.Item>
-    <Menu.Item key='2'>Chat</Menu.Item>
-    <Menu.Item key='3'>Education</Menu.Item>
+    <Menu.Item key='1'>Oyun</Menu.Item>
+    <Menu.Item key='2'>Sohbet</Menu.Item>
+    <Menu.Item key='3'>Eğitim</Menu.Item>
   </Menu>
 );
 
