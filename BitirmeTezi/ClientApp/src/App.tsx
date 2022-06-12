@@ -12,7 +12,7 @@ export default () => (
         <Route exact path="/">
             <Redirect to="/login" />
         </Route>
-        <Route path='/home' component={Home} />
+        <Route exact path='/stream/:stream' component={Home} />
         <Route path='/signup' component={SignUp} />
         <Route path='/login' component={LogIn} />
         <Route path='/browse' component={Browse} />

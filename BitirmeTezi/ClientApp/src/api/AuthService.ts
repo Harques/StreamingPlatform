@@ -36,4 +36,14 @@ export class AuthService {
             alert(data.Error[0])
         }
     }
+
+    public async streamUrl(body: string){
+        const response = await this.api.get('auth/stream', body)
+        if(response.ok){
+            return response
+        }
+        else{
+            alert("Bu kullanıcı adına sahip bir kullanıcı bulunamadı.")
+        }
+    }
 }

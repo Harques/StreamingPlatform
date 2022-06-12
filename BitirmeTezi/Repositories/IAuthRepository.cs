@@ -9,5 +9,7 @@ namespace BitirmeTezi.Repositories
         Task<User> Login(string username, string password);
         Task<bool> UserExistsByEmail(string email);
         Task<bool> UserExistsByUsername(string username);
+        Task<User> UserByUsername(string username);
+        
     }
 }

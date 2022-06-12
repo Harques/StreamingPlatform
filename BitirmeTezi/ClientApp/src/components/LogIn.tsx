@@ -61,7 +61,7 @@ class LogIn extends React.Component<MyProps, MyState> {
       var success = await this.authService.login(body)
   
       if (success) {
-        this.props.history.replace('/home')
+        this.props.history.replace('/browse')
       } 
     } else {
       alert('Lütfen gerekli alanları doldurunuz.')

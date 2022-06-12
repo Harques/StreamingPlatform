@@ -49,6 +49,11 @@ namespace BitirmeTezi.Repositories
             return await context.Users.AnyAsync(u => u.Username == username);
         }
 
+        public async Task<User> UserByUsername(string username)
+        {
+            return await context.Users.FirstOrDefaultAsync(u => u.Username == username);
+        }
+
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new System.Security.Cryptography.HMACSHA512())

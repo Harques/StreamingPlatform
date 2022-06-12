@@ -8,7 +8,10 @@ export class WebApi {
             headers: {'content-type': 'application/json'},
             body: body
         }       
-
         return await fetch(this.baseUrl + path, requestOptions)
-    }    
+    }
+    public async get(path: string, body: string) { 
+
+        return await fetch(this.baseUrl + path + "/" + body)
+    }     
 }

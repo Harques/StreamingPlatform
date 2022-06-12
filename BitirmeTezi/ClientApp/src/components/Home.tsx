@@ -3,14 +3,17 @@ import ReactHlsPlayer from "react-hls-player/dist";
 import { connect } from "react-redux";
 import Row from "antd/lib/grid/row";
 import { Content, Header } from "antd/lib/layout/layout";
+import {useParams, useLocation} from "react-router-dom"
 import Col from "antd/lib/grid/col";
 import { Menu, Dropdown, Button, message, Tooltip } from "antd";
 import ArrowDropDownOutlinedIcon from "@material-ui/icons/ArrowDropDownOutlined";
-import { Subtitles } from "@material-ui/icons";
+import { Subtitles, TitleSharp } from "@material-ui/icons";
 import NavMenu from "./NavMenu";
 import { Context } from "../helpers/Context";
+import { AuthService } from '../api/AuthService';
+import { StringSchema } from "yup";
 
-type MyState = { videoFile: File };
+type MyState = { url : string};
 type MyProps = {};
 
 function handleMenuClick(e: any) {
@@ -41,6 +44,7 @@ function getSubtitleText(textData: string | null) {
   }
 }
 
+
 const menu = (
   <Menu onClick={handleMenuClick}>
     <Menu.Item key='1'>Gaming</Menu.Item>
@@ -50,21 +54,31 @@ const menu = (
 );
 
 class Home extends React.Component<MyProps, MyState> {
+  authService: AuthService; 
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
   socket!: WebSocket;
   context: Context;
+
   constructor(props: any) {
     super(props);
-    this.extractAudio = this.extractAudio.bind(this);
+    this.getUrl = this.getUrl.bind(this);
     this.prepareWebSocket = this.prepareWebSocket.bind(this);
     this.prepareWebSocket();
-    setInterval(() => this.extractAudio(), 1000);
+    this.authService = new AuthService();
     this.context = Context.getInstance()
     if (this.context.getCurrentUser() !== undefined)
       console.log(this.context.getCurrentUser().email)
+      this.setState({
+        url : ''
+      })
+ 
   }
+ async componentWillMount(){
+  await this.getUrl()
+ }
+  
 
-  render() {    
+render() { 
     return (
       <React.Fragment>
         <NavMenu />
@@ -88,7 +102,8 @@ class Home extends React.Component<MyProps, MyState> {
           <Row style={{ width: "100%", justifyContent: "center" }}>
             <div style={{ position: "relative" }}>
               <ReactHlsPlayer
-                src='http://20.101.175.16:8080/hls/test.m3u8'
+                id="player"
+                src={this.state ? "http://20.101.175.16:8080/hls/" + this.state.url + ".m3u8":"http://20.101.175.16:8080/hls/test.m3u8"}
                 autoPlay={true}
                 playerRef={this.playerRef}
                 width='1500px'
@@ -152,45 +167,17 @@ class Home extends React.Component<MyProps, MyState> {
     );
   }
 
-  extractAudio() {
-    /*var request = $.ajax({
-      type: "GET",
-      url: "http://20.101.164.72/api/subtitle/getSubtitle"
-    });
-    request.done(function (res) {
-      // textArea?.innerText = res
-      console.log(res);
-    });
-    request.fail(function(jqXHR){
-      console.error(jqXHR)
-    })*/
-    if (!this.socket || this.socket.readyState != WebSocket.OPEN) return;
-    this.socket.send("hey");
-    //   const ffmpeg = createFFmpeg({
-    //     corePath: "https://unpkg.com/@ffmpeg/core@0.10.0/dist/ffmpeg-core.js",
-    //     log: true,
-    //   });
-    //   await ffmpeg.load();
-    //   ffmpeg.FS(
-    //     "writeFile",
-    //     "input.ts",
-    //     await fetchFile("http://20.54.150.204:8080/hls/test-8.ts")
-    //   );
-    //   await ffmpeg.run(
-    //     "-i",
-    //     "input.ts",
-    //     "-vn",
-    //     "-acodec",
-    //     "copy",
-    //     "output-audio.aac"
-    //   );
-    //   const data = ffmpeg.FS("readFile", "output-audio.aac");
-    //   const element = document.createElement("a");
-    //   const file = new Blob([data.buffer]);
-    //   element.href = URL.createObjectURL(file);
-    //   element.download = "output-audio.aac";
-    //   document.body.appendChild(element); // Required for this to work in FireFox
-    //   element.click();
+  async getUrl() {
+    const location = window.location.pathname;
+    var path = location.split("/").pop()
+    if(typeof path === 'string'){
+      var response = await this.authService.streamUrl(path)
+      if(response){
+        response.text().then((text) =>{
+          this.setState({url : text.toString()})
+        })
+      }
+    }
   }
 
   prepareWebSocket() {
@@ -200,7 +187,7 @@ class Home extends React.Component<MyProps, MyState> {
       console.log("connected", e);
     };
     this.socket.onclose = (e) => {
-      console.log("Disonnected", e);
+      console.log("Disconnected", e);
     };
     this.socket.onerror = (e) => {
       console.log(e);
