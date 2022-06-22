@@ -8,6 +8,7 @@ import Browse from "./components/Browse";
 import NotFoundPage from "./components/NotFoundPage";
 import "./custom.css";
 import { BrowserRouter } from "react-router-dom";
+import Dashboard from "./components/Dashboard";
 
 export default () => (
   <Layout>
@@ -20,7 +21,8 @@ export default () => (
         <Route path='/signup' component={SignUp} />
         <Route path='/login' component={LogIn} />
         <Route path='/browse' component={Browse} />
-        <Route path="/404" component={NotFoundPage} />
+        <Route path='/dashboard' component={Dashboard} />
+        <Route path="/404" component={NotFoundPage} />        
         <Redirect to="/404" />
       </Switch>
     </BrowserRouter>

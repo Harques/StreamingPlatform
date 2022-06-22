@@ -100,7 +100,7 @@ render() {
             <div style={{ position: "relative" }}>
               <ReactHlsPlayer
                 id="player"
-                src={this.state ? "http://20.101.175.16:8080/hls/" + this.state.url + ".m3u8":"http://20.101.175.16:8080/hls/test.m3u8"}
+                src={this.state ? "http://20.56.240.145:8080/hls/" + this.state.url + ".m3u8" : "http://20.56.240.145:8080/hls/test.m3u8"}
                 autoPlay={true}
                 playerRef={this.playerRef}
                 width='1500px'
@@ -165,16 +165,16 @@ render() {
   }
 
   async getUrl() {
-    const location = window.location.pathname;
-    var path = location.split("/").pop()
-    if(typeof path === 'string'){
-      var response = await this.authService.streamUrl(path)
-      if(response){
-        response.text().then((text) =>{
-          this.setState({url : text.toString()})
-        })
-      }
-    }
+    // const location = window.location.pathname;
+    // var path = location.split("/").pop()
+    // if(typeof path === 'string'){
+    //   var response = await this.authService.streamUrl(path)
+    //   if(response){
+    //     response.text().then((text) =>{
+    //       this.setState({url : text.toString()})
+    //     })
+    //   }
+    // }
   }
 
   prepareWebSocket() {

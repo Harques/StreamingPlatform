@@ -1,4 +1,8 @@
 ﻿using BitirmeTezi.Data;
+using BitirmeTezi.Models;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BitirmeTezi.Repositories
 {
@@ -32,6 +36,16 @@ namespace BitirmeTezi.Repositories
             return context.SaveChanges() > 0;
         }
 
-        
+        public List<Stream> getAllStreams()
+        {
+            return context.Streams.ToList();
+        }
+
+        public async Task<Stream> startStream(Stream stream)
+        {
+            context.Streams.Add(stream);
+            context.SaveChanges();
+            return stream;
+        }
     }
 }

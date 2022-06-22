@@ -1,6 +1,8 @@
 import { Tabs } from "antd";
 import React from "react";
 import Gallery from "react-photo-gallery";
+import { StreamService } from "../api/StreamService";
+import { Stream } from "../models/Stream";
 import NavMenu from "./NavMenu";
 import { photos } from "./photos";
 import { photos2 } from "./photos2";
@@ -21,6 +23,14 @@ function columns(containerWidth: number) {
 }
 
 class Browse extends React.Component<{}> {
+  streamService: StreamService
+
+  constructor(props: any) {
+    super(props);
+    this.streamService = new StreamService()
+    this.getAllStreams()
+  }
+
   render() {
     return (
       <>
@@ -53,6 +63,14 @@ class Browse extends React.Component<{}> {
         </Tabs>
       </>
     );
+  }
+
+  async getAllStreams() {    
+    const response = await this.streamService.getStreams(); 
+
+    if (response.length > 0) {
+      console.log(response[0].url)
+    }
   }
 }
 

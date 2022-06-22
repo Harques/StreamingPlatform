@@ -122,19 +122,6 @@ namespace BitirmeTezi.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
-        [Route("stream/{stream}")]
-        public async Task<ActionResult> GetStreamUrl(string stream)
-        {
-            User user = await authRepository.UserByUsername(stream);
-            if(user == null)
-            {
-                ModelState.AddModelError("Error", "Bu kullanıcı adına sahip bir kullanıcı bulunamadı.");
-                return BadRequest(ModelState);
-            }
-            return Ok(user.StreamURL);
-        }
-
         private string GetTokenString(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

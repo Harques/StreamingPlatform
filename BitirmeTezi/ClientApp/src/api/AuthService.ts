@@ -16,8 +16,11 @@ export class AuthService {
 
         var data = await response.json()
 
-        if (response.ok) {  
-            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamUrl, new Date(data.lastLoginDate), data.token))              
+        if (response.ok) {
+            localStorage.setItem('key', data.streamURL)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('id', data.id)
+            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamURL, new Date(data.lastLoginDate), data.token))              
             return true
         } else {
             alert(data.Error[0])
@@ -30,20 +33,13 @@ export class AuthService {
         var data = await response.json()
 
         if (response.ok) {
+            localStorage.setItem('key', data.streamURL)
+            localStorage.setItem('token', data.token)
+            localStorage.setItem('id', data.id)
             this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamUrl, new Date(data.lastLoginDate), data.token)) 
             return true
         } else {
             alert(data.Error[0])
-        }
-    }
-
-    public async streamUrl(body: string){
-        const response = await this.api.get('auth/stream', body)
-        if(response.ok){
-            return response
-        }
-        else{
-            alert("Bu kullanıcı adına sahip bir kullanıcı bulunamadı.")
         }
     }
 }

@@ -19,7 +19,7 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                         <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
                             <ul className="navbar-nav flex-grow">
                                 <NavItem>
-                                    <NavLink style={{fontSize: '16px'}} tag={Link} className="text-dark" to="/home">Yayın</NavLink>
+                                    <NavLink style={{fontSize: '16px'}} tag={Link} className="text-dark" to="/dashboard">Yayın</NavLink>
                                 </NavItem>      
                                 <NavItem>
                                     <NavLink style={{fontSize: '16px'}} tag={Link} className="text-dark" to="/browse">Gözat</NavLink>
