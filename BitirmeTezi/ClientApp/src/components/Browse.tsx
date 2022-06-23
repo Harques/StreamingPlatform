@@ -1,6 +1,5 @@
 import { Col, Row, Tabs } from "antd";
 import React from "react";
-import { useHistory } from "react-router-dom";
 import { StreamService } from "../api/StreamService";
 import { Stream } from "../models/Stream";
 import NavMenu from "./NavMenu";
@@ -9,7 +8,6 @@ import { photos2 } from "./photos2";
 import { photos3 } from "./photos3";
 
 const { TabPane } = Tabs;
-//const history = useHistory();
 
 function callback(key: any) {
   console.log(key);
@@ -31,8 +29,10 @@ function printStreams(yayınlar: Array<Stream>, kategori: String) {
 
   var rows = [];
   for (let i = 0; i < yayınListe.length; i++) {
-    var linkString = "https://localhost:3000/stream/";
+    var linkString = window.location.hostname + ":" + window.location.port + "/stream/";
     var yayinLink = linkString + yayınListe[i].url;
+    
+    console.log(yayinLink);
     rows.push(
       <Col style={{ alignContent: "center", padding: "2px" }}>
         <a href={yayinLink}>
@@ -55,11 +55,9 @@ function printStreams(yayınlar: Array<Stream>, kategori: String) {
   return rows;
 }
 
-interface MyState {
-  value: Stream;
-}
+type MyState = {value: Stream}
+
 class Browse extends React.Component<MyState> {
-  //history = useHistory();
 
   streamService: StreamService;
 
@@ -121,12 +119,6 @@ class Browse extends React.Component<MyState> {
       console.log(response[index]);
     }
   }
-
-  //stream() {
-  //  var streamlink = this.history.push('/streams')
-  //  return streamlink;
-  //}
-
 }
 
 export default Browse;
