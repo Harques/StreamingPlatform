@@ -1,8 +1,6 @@
-import Col from 'antd/lib/grid/col';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Input } from 'reactstrap'
-import { WebApi } from '../api/WebApi';
+import { Button, Input } from 'reactstrap';
 import { History } from 'history';
 import { AuthService } from '../api/AuthService';
 
