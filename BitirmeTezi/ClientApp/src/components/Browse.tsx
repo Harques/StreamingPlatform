@@ -29,9 +29,13 @@ function printStreams(yayınlar: Array<Stream>, kategori: String) {
 
   var rows = [];
   for (let i = 0; i < yayınListe.length; i++) {
-    var linkString = window.location.hostname + ":" + window.location.port + "/stream/";
+    var linkString = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/stream/";
     var yayinLink = linkString + yayınListe[i].url;
-    
+
+    console.log(window.location.protocol);
+    console.log(window.location.hostname);
+    console.log(window.location.port);
+
     console.log(yayinLink);
     rows.push(
       <Col style={{ alignContent: "center", padding: "2px" }}>
