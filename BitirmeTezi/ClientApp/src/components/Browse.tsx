@@ -31,7 +31,7 @@ function printStreams(yayınlar: Array<Stream>, kategori: String) {
 
   var rows = [];
   for (let i = 0; i < yayınListe.length; i++) {
-    var linkString = "https://localhost:3000/streams/";
+    var linkString = "https://localhost:3000/stream/";
     var yayinLink = linkString + yayınListe[i].url;
     rows.push(
       <Col style={{ alignContent: "center", padding: "2px" }}>
