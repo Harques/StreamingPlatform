@@ -30,7 +30,7 @@ class SignUp extends React.Component<MyProps, MyState> {
   render() {
     return (
       <React.Fragment>
-        <h2  style={{textAlign: 'center', marginTop: '10%'}}>Giriş</h2>
+        <h2  style={{textAlign: 'center', marginTop: '10%'}}>Kaydol</h2>
         <div className='w-25 mt-4' style={{marginLeft: 'auto',  marginRight: 'auto'}}>
           <Input placeholder='Kullanıcı Adı *' className='mt-3' onChange={(e) => this.setState({userName: e.target.value})}></Input>
           <Input placeholder='E-Posta *' className='mt-3' onChange={(e) => this.setState({email: e.target.value})}></Input>
