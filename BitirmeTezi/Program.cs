@@ -44,7 +44,7 @@ namespace BitirmeTezi
 
         public static IWebHost BuildWebHost(string[] args) =>
           WebHost.CreateDefaultBuilder(args)
-              .UseUrls("http://20.50.189.17/")
+              .UseUrls("https://localhost:44306")
               .UseStartup<Startup>()
               .Build();
     }

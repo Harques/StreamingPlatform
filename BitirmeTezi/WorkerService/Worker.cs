@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Api.Gax.Grpc;
@@ -10,6 +9,11 @@ using static Google.Cloud.Speech.V1.SpeechClient;
 using BitirmeTezi.Controllers;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
+using BitirmeTezi.Repositories;
+using BitirmeTezi.Models;
+using System.IO;
+using Microsoft.Extensions.DependencyInjection;
+using BitirmeTezi.Data;
 
 namespace BitirmeTezi.WorkerService
 {
@@ -17,14 +21,24 @@ namespace BitirmeTezi.WorkerService
     {
         private static System.Timers.Timer aTimer;
         private static StreamingRecognizeStream streamingCall;
+        private static IAppRepository _appRepository;
+        private static Models.Stream _stream;
         private readonly ILogger<Worker> _logger;
+        private static IServiceScopeFactory _serviceScopeFactory;
+        private static string lastSaidWhat = "";
 
         public Worker(ILogger<Worker> logger) =>
             _logger = logger;
 
+        public Worker(Models.Stream stream, IServiceScopeFactory serviceScopeFactory)
+        {            
+            _stream = stream;
+            _serviceScopeFactory = serviceScopeFactory;
+        }
+            
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            while (!stoppingToken.IsCancellationRequested && _stream != null)
             {
                 string currentDirectory = Directory.GetCurrentDirectory();
                 MemoryStream ms = new MemoryStream();
@@ -61,7 +75,7 @@ namespace BitirmeTezi.WorkerService
                     proc.StartInfo.FileName = Path.Combine(currentDirectory, "FFmpeg\\ffmpeg.exe");
                 }
 
-                proc.StartInfo.Arguments = "-i http://20.101.175.16:8080/hls/test.m3u8 -f flac pipe:1";
+                proc.StartInfo.Arguments = "-i " + _stream.URL + " -f flac pipe:1";
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.RedirectStandardInput = true;
                 proc.StartInfo.RedirectStandardOutput = true;
@@ -93,7 +107,7 @@ namespace BitirmeTezi.WorkerService
                     {
                         if (ex.Message.Contains("Exceeded maximum allowed stream duration of 305 seconds.") || ex.Message.Contains("Audio should be sent close to real time.")) break;
                         Debug.WriteLine(ex.Message);
-                        _logger.LogError(ex.Message);
+                        //_logger.LogError(ex.Message);
                     }
 
                     if (firstTime)
@@ -131,10 +145,10 @@ namespace BitirmeTezi.WorkerService
                     while (await responseStream.MoveNextAsync())
                     {
                         saidWhat = responseStream.Current.Results[0].Alternatives[0].Transcript;
-                        if (SubtitleController.lastSaidWhat != saidWhat)
+                        if (lastSaidWhat != saidWhat)
                         {
-                            Debug.WriteLine(saidWhat);
-                            SubtitleController.lastSaidWhat = saidWhat;
+                            Debug.WriteLine(saidWhat);                            
+                            lastSaidWhat = saidWhat;                            
                         }
                         // Do something with streamed response
                     }
@@ -150,5 +164,11 @@ namespace BitirmeTezi.WorkerService
             responseHandlerTask.Wait();
             // Debug.WriteLine("The Elapsed event was raised at {0}", e.SignalTime);
         }
-    }
+
+        public static string getLastSaidWhat()
+        {
+            return lastSaidWhat;
+        }
+
+    }    
 }

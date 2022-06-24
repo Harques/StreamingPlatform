@@ -67,7 +67,7 @@ namespace BitirmeTezi.Controllers
 
             const string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
             
-            string streamURL = new(Enumerable.Repeat(chars, 8)
+            string streamKey = new(Enumerable.Repeat(chars, 8)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
 
             User user = new User
@@ -75,7 +75,7 @@ namespace BitirmeTezi.Controllers
                 Email = email,
                 Username = username,                
                 LastLoginDate = DateTime.Now, // TODO: Add 3 hours when deployed to azure
-                StreamURL = streamURL
+                StreamKey = streamKey
             };
 
             var createdUser = await authRepository.Register(user, password);

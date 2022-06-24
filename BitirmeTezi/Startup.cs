@@ -1,5 +1,6 @@
 using BitirmeTezi.Controllers;
 using BitirmeTezi.Data;
+using BitirmeTezi.Models;
 using BitirmeTezi.Repositories;
 using BitirmeTezi.WorkerService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -36,7 +37,7 @@ namespace BitirmeTezi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddHostedService<Worker>();
+            //services.AddHostedService<Worker>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -160,15 +161,28 @@ namespace BitirmeTezi
 
             while (!result.CloseStatus.HasValue)
             {
-                var inComingMesage = Encoding.UTF8.GetString(bag, 0, result.Count);
-                //Debug.WriteLine("\nClients says that: '{0}'", inComingMesage);
+                var inComingMesage = Encoding.UTF8.GetString(bag, 0, result.Count);                
+                Debug.WriteLine("\nClients says that: " + inComingMesage);
                 var rnd = new Random();
                 var number = rnd.Next(1, 100);
                 string message = string.Format("You luck Number is '{0}'. Dont't remember that", number.ToString());
-                byte[] outGoingMeesage = Encoding.UTF8.GetBytes(SubtitleController.lastSaidWhat);
-                await wSocket.SendAsync(new ArraySegment<byte>(outGoingMeesage, 0, outGoingMeesage.Length), result.MessageType, result.EndOfMessage, CancellationToken.None);
 
-                result = await wSocket.ReceiveAsync(new ArraySegment<byte>(bag), CancellationToken.None);
+                try
+                {
+                    var id = int.Parse(inComingMesage);
+                    Worker worker = StreamsController.getWorker(int.Parse(inComingMesage));
+
+                    Debug.WriteLine("\nSubtitle: " + Worker.getLastSaidWhat());                    
+                    byte[] outGoingMeesage = Encoding.UTF8.GetBytes(Worker.getLastSaidWhat());
+
+                    await wSocket.SendAsync(new ArraySegment<byte>(outGoingMeesage, 0, outGoingMeesage.Length), result.MessageType, result.EndOfMessage, CancellationToken.None);
+
+                    result = await wSocket.ReceiveAsync(new ArraySegment<byte>(bag), CancellationToken.None);
+                } catch (Exception e)
+                {
+                    Debug.WriteLine("exception: " + e.Message);
+                }
+               
 
             }
             await wSocket.CloseAsync(result.CloseStatus.Value, result.CloseStatusDescription, CancellationToken.None);

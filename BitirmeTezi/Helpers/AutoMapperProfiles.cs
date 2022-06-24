@@ -9,6 +9,8 @@ namespace BitirmeTezi.Helpers
         public AutoMapperProfiles()
         {
             CreateMap<User, UserDetailDto>();
+            CreateMap<User, StreamerDetailDto>();
+            CreateMap<User, StreamKeyDto>();
             CreateMap<Stream, StreamDetailDto>();
         }
     }

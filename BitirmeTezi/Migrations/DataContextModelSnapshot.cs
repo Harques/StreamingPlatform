@@ -59,10 +59,7 @@ namespace BitirmeTezi.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("varbinary(max)");
 
-                    b.Property<int?>("StreamId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("StreamURL")
+                    b.Property<string>("StreamKey")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Username")
@@ -70,21 +67,7 @@ namespace BitirmeTezi.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("StreamId");
-
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("BitirmeTezi.Models.User", b =>
-                {
-                    b.HasOne("BitirmeTezi.Models.Stream", null)
-                        .WithMany("Viewers")
-                        .HasForeignKey("StreamId");
-                });
-
-            modelBuilder.Entity("BitirmeTezi.Models.Stream", b =>
-                {
-                    b.Navigation("Viewers");
                 });
 #pragma warning restore 612, 618
         }

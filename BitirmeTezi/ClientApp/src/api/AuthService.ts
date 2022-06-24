@@ -17,10 +17,10 @@ export class AuthService {
         var data = await response.json()
 
         if (response.ok) {
-            localStorage.setItem('key', data.streamURL)
+            localStorage.setItem('key', data.streamKey)
             localStorage.setItem('token', data.token)
             localStorage.setItem('id', data.id)
-            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamURL, new Date(data.lastLoginDate), data.token))              
+            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamKey, new Date(data.lastLoginDate), data.token))              
             return true
         } else {
             alert(data.Error[0])
@@ -33,10 +33,10 @@ export class AuthService {
         var data = await response.json()
 
         if (response.ok) {
-            localStorage.setItem('key', data.streamURL)
+            localStorage.setItem('key', data.streamKey)
             localStorage.setItem('token', data.token)
             localStorage.setItem('id', data.id)
-            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamUrl, new Date(data.lastLoginDate), data.token)) 
+            this.context.setCurrentUser(new User(data.id, data.email, data.username, data.streamKey, new Date(data.lastLoginDate), data.token)) 
             return true
         } else {
             alert(data.Error[0])

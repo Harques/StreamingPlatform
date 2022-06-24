@@ -9,8 +9,10 @@ import { Subtitles } from "@material-ui/icons";
 import NavMenu from "./NavMenu";
 import { Context } from "../helpers/Context";
 import { AuthService } from '../api/AuthService';
+import { StreamService } from "../api/StreamService";
+import { copyFile } from "fs";
 
-type MyState = { url : string};
+type MyState = {url: string, streamId: string};
 type MyProps = {};
 
 function handleMenuClick(e: any) {
@@ -35,7 +37,8 @@ function getSubtitleText(textData: string | null) {
       strArray.splice(0, 1);
     }
     var subtitle = strArray.join(" ");
-    span.textContent = subtitle;
+    if (subtitle.length > 0)
+      span.textContent = subtitle;
   } else {
     span.textContent = " ";
   }
@@ -51,7 +54,7 @@ const menu = (
 );
 
 class Home extends React.Component<MyProps, MyState> {
-  authService: AuthService; 
+  streamService: StreamService; 
   playerRef: React.RefObject<HTMLVideoElement> = React.createRef();
   socket!: WebSocket;
   context: Context;
@@ -60,8 +63,8 @@ class Home extends React.Component<MyProps, MyState> {
     super(props);
     this.getUrl = this.getUrl.bind(this);
     this.prepareWebSocket = this.prepareWebSocket.bind(this);
-    this.prepareWebSocket();
-    this.authService = new AuthService();
+    this.sendRequest = this.sendRequest.bind(this) 
+    this.streamService = new StreamService();
     this.context = Context.getInstance()
     if (this.context.getCurrentUser() !== undefined)
       console.log(this.context.getCurrentUser().email)
@@ -70,9 +73,10 @@ class Home extends React.Component<MyProps, MyState> {
       })
  
   }
- async componentWillMount(){
-  await this.getUrl()
- }
+
+  async componentWillMount(){
+    await this.getUrl()
+  }
   
 
 render() { 
@@ -165,21 +169,19 @@ render() {
   }
 
   async getUrl() {
-    // const location = window.location.pathname;
-    // var path = location.split("/").pop()
-    // if(typeof path === 'string'){
-    //   var response = await this.authService.streamUrl(path)
-    //   if(response){
-    //     response.text().then((text) =>{
-    //       this.setState({url : text.toString()})
-    //     })
-    //   }
-    // }
+    const location = window.location.pathname;
+    var path = location.split("/").pop()
+    if(typeof path === 'string'){
+      var response = await this.streamService.getStreamKey(path)
+      if(response.length > 0) {
+        this.setState({url : response[0], streamId: response[1]})
+        this.prepareWebSocket()
+      }
+    }
   }
 
-  prepareWebSocket() {
-    //this.socket = new WebSocket("ws://20.50.189.17/subtitle");
-    this.socket = new WebSocket("ws://localhost:5000/subtitle");
+  prepareWebSocket() {        
+    this.socket = new WebSocket("wss://localhost:44306/subtitle");
     this.socket.onopen = (e) => {
       console.log("connected", e);
     };
@@ -187,12 +189,18 @@ render() {
       console.log("Disconnected", e);
     };
     this.socket.onerror = (e) => {
-      console.log(e);
+      console.log("Error", e);
     };
     this.socket.onmessage = (e) => {
       console.log(e.data);
       getSubtitleText(e.data);
-    };
+    };    
+    setInterval(() => this.sendRequest(), 1000);
+  }
+
+  sendRequest() {
+    if (!this.socket || this.socket.readyState != WebSocket.OPEN) return
+    this.socket.send(this.state.streamId)
   }
 }
 

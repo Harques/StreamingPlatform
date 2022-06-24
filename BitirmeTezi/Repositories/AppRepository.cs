@@ -1,5 +1,6 @@
 ﻿using BitirmeTezi.Data;
 using BitirmeTezi.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -46,6 +47,32 @@ namespace BitirmeTezi.Repositories
             context.Streams.Add(stream);
             context.SaveChanges();
             return stream;
+        }
+
+        public void endStream(int id)
+        {
+            var stream = context.Streams.FirstOrDefault(s => s.Id == id);
+            context.Streams.Remove(stream);            
+        }
+
+        public async Task<User> findUserById(int id)
+        {
+            return context.Users.FirstOrDefault(u => u.Id == id);
+        }
+
+        public Stream findStreamById(int id)
+        {
+            return context.Streams.FirstOrDefault(s => s.Id == id);
+        }
+
+        public User findUserByUsername(string username)
+        {
+            return context.Users.FirstOrDefault(u => u.Username == username);
+        }
+
+        public Stream findStreamByStreamKey(string streamKey)
+        {
+            return context.Streams.FirstOrDefault(s => s.URL.Contains(streamKey));
         }
     }
 }
