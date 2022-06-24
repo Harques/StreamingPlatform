@@ -87,15 +87,15 @@ class Browse extends React.Component<{}, MyState> {
           size='large'
           type='card'
         >
-          <TabPane tab='Gaming' key='1'>
+          <TabPane tab='Oyun' key='1'>
             <h2 style={{ textAlign: "center" }}>Oyun</h2>
             <Row>{printStreams(this.state.yayınListesi, "oyun")}</Row>
           </TabPane>
-          <TabPane tab='Chat' key='3'>
+          <TabPane tab='Sohbet' key='3'>
             <h2 style={{ textAlign: "center" }}>Sohbet</h2>
             <Row>{printStreams(this.state.yayınListesi, "sohbet")}</Row>
           </TabPane>
-          <TabPane tab='Education' key='2'>
+          <TabPane tab='Eğitim' key='2'>
             <h2 style={{ textAlign: "center" }}>Eğitim</h2>
             <Row>{printStreams(this.state.yayınListesi, "eğitim")}</Row>
           </TabPane>
