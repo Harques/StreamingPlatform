@@ -43,10 +43,31 @@ class Dashboard extends React.Component<MyProps, MyState> {
         return(
             <>
             <Row style={{ width: "100%", justifyContent: "center" }}>
-              <h2>Yayın Kontrol Paneli</h2>
+              <h1>Yayın Kontrol Paneli</h1>
             </Row>
+            <br/>
+            <br/>
+            <br/>
             <Row  style={{ width: "100%", justifyContent: "center" }} >
               {this.state.stream ? (<h3>Yayınınız açık</h3>) : (<h3>Yayınınız kapalı</h3>)}
+            </Row>
+            <br/>
+            <br/>
+            <Row  style={{ width: "100%", justifyContent: "center" }} >
+                {this.state.stream ? <h5>OBS'ten yayınınızı durdurduktan sonra bu sayfanın güncellenmesi biraz zaman alacaktır.</h5>:<h3>Yayın Anahtarınız: {localStorage.getItem("key")}</h3>} 
+            </Row>
+            <Row  style={{ width: "100%", justifyContent: "center" }} >
+                {this.state.stream ? <h5>Lütfen sayfayı kapatmayınız.</h5>:""} 
+            </Row>
+            <br/>
+            <Row  style={{ width: "100%", justifyContent: "center" }} >
+                {this.state.stream ? <h3></h3>:<h5>Bu yayın anahtarını kullanarak OBS üzerinden yayın yapabilirsiniz.</h5>} 
+            </Row>
+            <br/>
+            <br/>
+            <br/>
+            <Row  style={{ width: "100%", justifyContent: "center" }} >
+              {this.state.stream ? (<h3></h3>) : (<h3>Yayınızın kategorisi:</h3>)}
             </Row>
             <Row
               style={{
@@ -64,6 +85,10 @@ class Dashboard extends React.Component<MyProps, MyState> {
                 </Dropdown>
               </div>)}              
             </Row>
+            <br/>
+            <br/>
+            <br/>
+            <br/>
             </>
         )
     }
